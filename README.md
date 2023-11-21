@@ -34,19 +34,23 @@ The repository layout is pretty straightforward, including the CMake files to bu
 -- cppcheck_suppressions.txt    - optional list of suppressions for cppcheck
 -- CMakeLists.txt               - the main `CMake` Project configuration file
 -- .gitignore                   - files to be excluded by git
--- dependencies.cmake           - Project dependencies, managed by `conan` or `git submodule`
 +- `cmake/`                     - CMake modules
-  | -- clang-format.cmake       - CMake target definitions for clang-format
+  | -- clang_format.cmake       - C++ header/source format `--target format`
+  | -- clang_tidy.cmake         - C++ static check tool
   | -- compiler-options.cmake   - Common compiler options for major platforms/compilers
   | -- cpack.cmake              - Packaging configuration with CPack
-  | -- add_git_submodule.cmake  - CMake function `add_git_submodule()` for manage dependencies
-+- `project/`                   - the whole C++ project
-  | -- .clang-format            - the formatter rules for the C++ project
-  | -- CMakeLists.txt
-  | +- `apphello/`              - your application files (including CMakeLists.txt, sources)
-  | +- `libhello/`              - your library1 files (including CMakeLists.txt, sources, `doctest`, optional `openssl`)
-  | +- `libmymath/`             - your library2 files (including CMakeLists.txt, sources, `gtest`)
+  | -- cppcheck.cmake           - C++ static check tool
+  | -- dependencies.cmake       - Project dependencies
+  | -- doxygen.cmake            - Add support for `--target doxygen-docs`
+  | -- standard_options.cmake   - Standard options, can be overrided with "-D..."
+-- .clang-format                - the clang-format rules for the C++ project
+-- .clang-tidy                  - the clang-tidy rules for the C++ project
+-- CMakeLists.txt
++- `apphello/`                  - your application files (including CMakeLists.txt, sources)
++- `libhello/`                  - your library1 files (including CMakeLists.txt, sources, `doctest`, optional `openssl`)
++- `libmymath/`                 - your library2 files (including CMakeLists.txt, sources, `gtest`)
 +- `build/`                     - working directory for the build
++- `docs/`                      - generate docs by `doxygen` & `dot`
 ```
 
 ## Available CMake Options
@@ -82,4 +86,10 @@ Package:
 
 ```bash
 cmake --build [build_dir] --target package
+```
+
+Generate Docs
+
+```bash
+cmake --build [build_dir] --target doxygen-docs
 ```

@@ -3,7 +3,7 @@
 
 #include "libhello.h"
 
-using namespace hello;
+using hello::libhello;
 SCENARIO("Implementation shoud proceed successfully") {
     GIVEN("An implementation") {
         // WRITE here your implemented object

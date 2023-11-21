@@ -22,7 +22,7 @@ rm -rf build &> /dev/null
 
 print_seperate_line "2. CMake: preparing build"
 conan install . -s build_type=Debug --build=missing
-cmake -S . -B build/Debug -DCMAKE_EXPORT_COMPILE_COMMANDS=1 -DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTING=TRUE -DUSE_CONAN=TRUE -DCMAKE_TOOLCHAIN_FILE=build/Debug/generators/conan_toolchain.cmake
+cmake -S . -B build/Debug -DCMAKE_TOOLCHAIN_FILE=build/Debug/generators/conan_toolchain.cmake
 cp build/Debug/compile_commands.json .
 
 print_seperate_line "3. CMake: building"
