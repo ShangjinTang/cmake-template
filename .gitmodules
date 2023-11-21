@@ -1,12 +1,16 @@
 [submodule "external/googletest"]
+    branch = v1.14.0
 	path = external/googletest
 	url = https://github.com/google/googletest
 [submodule "external/spdlog"]
+    branch = v1.12.0
 	path = external/spdlog
 	url = https://github.com/gabime/spdlog
 [submodule "external/fmt"]
+    branch = 10.1.1
 	path = external/fmt
 	url = https://github.com/fmtlib/fmt
 [submodule "external/doctest"]
+    branch = v2.4.11
 	path = external/doctest
 	url = https://github.com/doctest/doctest
