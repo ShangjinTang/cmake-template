@@ -7,6 +7,7 @@ if(MSVC)
   list(
     APPEND
     compiler_options
+    $<$<BOOL:${WARNINGS_AS_ERRORS}>:/WX>
     /W4
     /permissive-
     $<$<CONFIG:RELEASE>:/O2
@@ -44,10 +45,10 @@ else(MSVC)
     -Wall
     -Wextra
     -Wpedantic
+    $<$<BOOL:${WARNINGS_AS_ERRORS}>:-Werror>
     $<$<CONFIG:RELEASE>:-O2>
     $<$<CONFIG:DEBUG>:-O0
     -g
-    -p
     -pg>)
 
   list(APPEND compiler_definitions
