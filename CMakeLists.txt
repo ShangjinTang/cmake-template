@@ -7,10 +7,6 @@
 # ##############################################################################
 cmake_minimum_required(VERSION 3.15)
 
-# Enables the Visibility Property on all target types
-cmake_policy(SET CMP0063 NEW)
-# Enables the MSVC_RUNTIME_LIBRARY property on targets
-cmake_policy(SET CMP0091 NEW)
 # Define the Project Name and Description
 project(
   project-hello
