@@ -65,9 +65,10 @@ else(MSVC)
     $<$<AND:$<NOT:$<CXX_COMPILER_ID:AppleClang>>,$<NOT:$<CXX_COMPILER_ID:Clang>>,$<NOT:$<BOOL:${BUILD_SHARED_LIBS}>>>:-pipe>
     $<$<AND:$<NOT:$<CXX_COMPILER_ID:AppleClang>>,$<NOT:$<CXX_COMPILER_ID:Clang>>,$<NOT:$<BOOL:${BUILD_SHARED_LIBS}>>>:-static-libstdc++>
     $<$<CONFIG:DEBUG>:-fno-omit-frame-pointer>
-    $<$<CONFIG:DEBUG>:-fsanitize=address>
-    $<$<CONFIG:DEBUG>:-fsanitize=leak>
-    $<$<CONFIG:DEBUG>:-fsanitize=undefined>
+    $<$<AND:$<CONFIG:DEBUG>,$<BOOL:${ENABLE_DEBUG_ASAN}>>:-fsanitize=address>
+    $<$<AND:$<CONFIG:DEBUG>,$<BOOL:${ENABLE_DEBUG_LSAN}>>:-fsanitize=leak>
+    $<$<AND:$<CONFIG:DEBUG>,$<BOOL:${ENABLE_DEBUG_UBSAN}>>:-fsanitize=undefined>
+    $<$<AND:$<CONFIG:DEBUG>,$<BOOL:${ENABLE_DEBUG_TSAN}>>:-fsanitize=thread>
     $<$<AND:$<NOT:$<CXX_COMPILER_ID:AppleClang>>,$<NOT:$<CXX_COMPILER_ID:Clang>>>:-fstack-clash-protection>
     $<$<AND:$<NOT:$<CXX_COMPILER_ID:AppleClang>>,$<NOT:$<CXX_COMPILER_ID:Clang>>>:-fbounds-check>
     -fstack-protector

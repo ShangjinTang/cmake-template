@@ -40,7 +40,23 @@ option(ENABLE_CODE_COVERAGE "Enable code coverage through GCC." ON)
 # Doxygen documentation
 #
 
-option(ENABLE_DOXYGEN "Enable Doxygen documentation builds of source." ON)
+option(ENABLE_DOXYGEN "Enable Doxygen documentation builds of source." OFF)
+
+#
+# Enable Sanitizers (only for Debug version)
+#
+
+option(ENABLE_DEBUG_ASAN "Enable Address Sanitizer in Debug Build" ON)
+option(ENABLE_DEBUG_LSAN "Enable Address Sanitizer in Debug Build" ON)
+option(ENABLE_DEBUG_UBSAN "Enable UndefinedBehavior Sanitizer in Debug Build"
+       ON)
+option(ENABLE_DEBUG_TSAN "Enable Thread Sanitizer in Debug Build" OFF)
+# TSAN is conflict with ASAN
+if(ENABLE_DEBUG_ASAN AND ENABLE_DEBUG_TSAN)
+  message(
+    FATAL_ERROR
+      "Do not use AddressSanitizer and ThreadSanitizer at the same time.")
+endif()
 
 #
 # Misc options
