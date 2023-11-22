@@ -2,6 +2,8 @@
 #
 # Compiler options with hardening flags
 
+option(CMAKE_BUILD_TYPE "CMake build type." "Debug")
+
 #
 # Package manager
 #

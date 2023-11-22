@@ -1,6 +1,15 @@
-# modern-cmake-template
+# Modern Cmake Template
 
-This repository aims to represent a template for Modern C++ projects, including static analysis checks, autoformatting, a BDD/TDD capable test-suite and packaging
+This repository aims to represent a template for Modern C++ projects, including static analysis checks, autoformatting, a BDD/TDD capable test-suite and packaging.
+
+## Resources
+
+- CMake:
+  - Official: [Getting Started](https://cmake.org/getting-started/)
+  - OnLine Book: [Modern CMake](https://cliutils.gitlab.io/modern-cmake/)
+  - Introduction Video: [CppCon 2017: Mathieu Ropert “Using Modern CMake Patterns to Enforce a Good Modular Design”](https://www.youtube.com/watch?v=eC9-iRN2b04)
+- Conan:
+  - Official: [conan.io](https://conan.io/)
 
 ## Requirements
 
@@ -8,12 +17,11 @@ This repository aims to represent a template for Modern C++ projects, including 
 - [`cmake`](https://cmake.org) 3.15+
 - dependencies: either [`conan`](https://conan.io) 2.0+ (recommend) or `git submodule`
   - libraries
-    - spdlog (required)
-    - fmt (required)
-    - openssl (optional)
+    - `spdlog` (required)
+    - `fmt` (required)
   - test libraries
-    - doctest (required only if '-DBUILD_TESTING=TRUE')
-    - gtest (required only if '-DBUILD_TESTING=TRUE')
+    - `doctest` (required only if enable `BUILD_TESTING`)
+    - `gtest` (required only if enable `BUILD_TESTING`)
 - `cppcheck` (optional)
 - `clang-format` (optional)
 
@@ -21,51 +29,50 @@ This repository aims to represent a template for Modern C++ projects, including 
 
 - CMake-based project management, including dependencies
 - Conan support for dependency management in CMake, completely optional
-- Additional tools such as `clang-format` and `cppcheck`
+- Code check tools such as `clang-format`, `cppcheck`
+- Sanitizers: Address Sanitizer, Leak Sanitizer, Undefined Behaviour Sanitizer, ...
 - Support for shared/static libraries, including generation of export information
 - Basic CPack configuration for redistributables
+- Doxygen documentation generator (default `OFF`)
 
 ## Repository layout
 
 The repository layout is pretty straightforward, including the CMake files to build the project, a `conanfile` where are declared examples of dependencies, a suppression list for cppcheck and the C++ source code:
 
 ```plain
--- conanfile.txt                - the main `conan` configuration file listing dependencies
--- cppcheck_suppressions.txt    - optional list of suppressions for cppcheck
--- CMakeLists.txt               - the main `CMake` Project configuration file
--- .gitignore                   - files to be excluded by git
-+- `cmake/`                     - CMake modules
-  | -- clang_format.cmake       - C++ header/source format `--target format`
-  | -- clang_tidy.cmake         - C++ static check tool
-  | -- compiler-options.cmake   - Common compiler options for major platforms/compilers
-  | -- cpack.cmake              - Packaging configuration with CPack
-  | -- cppcheck.cmake           - C++ static check tool
-  | -- dependencies.cmake       - Project dependencies
-  | -- doxygen.cmake            - Add support for `--target doxygen-docs`
-  | -- standard_options.cmake   - Standard options, can be overrided with "-D..."
 -- .clang-format                - the clang-format rules for the C++ project
 -- .clang-tidy                  - the clang-tidy rules for the C++ project
--- CMakeLists.txt
-+- `apphello/`                  - your application files (including CMakeLists.txt, sources)
-+- `libhello/`                  - your library1 files (including CMakeLists.txt, sources, `doctest`, optional `openssl`)
-+- `libmymath/`                 - your library2 files (including CMakeLists.txt, sources, `gtest`)
-+- `build/`                     - working directory for the build
-+- `docs/`                      - generate docs by `doxygen` & `dot`
+-- .gitignore                   - files to be excluded by git
++- `cmake/`                     - CMake modules
+  | -- clang_format.cmake       - C++ header/source format, usage: `--target format`
+  | -- clang_tidy.cmake         - C++ static check tool
+  | -- compiler-options.cmake   - Common compiler options for major platforms/compilers
+  | -- cpack.cmake              - Packaging configuration with CPack, usage: `--target doxygen-docs`
+  | -- cppcheck.cmake           - C++ static check tool
+  | -- dependencies.cmake       - Project dependencies
+  | -- doxygen.cmake            - Generate documentation, usage: `--target doxygen-docs`
+  | -- standard_options.cmake   - Standard options, can be overrided with "-D..."
+-- CMakeLists.txt               - the main `CMake` Project configuration file
+-- `apphello/`                  - your application files (including CMakeLists.txt, sources)
+-- `libhello/`                  - your library1 files (including CMakeLists.txt, sources, `doctest`)
+-- `libmymath/`                 - your library2 files (including CMakeLists.txt, sources, `gtest`)
+-- conanfile.txt                - the main `conan` configuration file listing dependencies
+-- cppcheck_suppressions.txt    - optional list of suppressions for cppcheck
+
+-- `build/`                     - working directory for the build
+-- `docs/`                      - generate docs by `doxygen` & `dot`
 ```
 
 ## Available CMake Options
 
-- BUILD_TESTING - builds the tests (requires `doctest` `gtest`)
-- BUILD_SHARED_LIBS - enables or disables the generation of shared libraries
-- USE_CONAN - whether use conan as package manager (default: `True`)
-- BUILD_WITH_MT - valid only for MSVC, builds libraries as MultiThreaded DLL
+Please see [Standard Options](cmake/standard_options.cmake) to check all available options.
 
-Unless you activate the `-DUSE_CONAN=FALSE` flag, you need to perform in advance a `conan install` step, just to fetch the dependencies.
+## Why choose `conan` over `git submodules`?
 
-## Why should you choose `conan` over `git submodules`?
+1. Build time is shorter.
+2. Dependencies management easier.
 
-1. build time is shorter
-2. dependencies management easier
+Note: you can also manage dependency with `vcpkg`.
 
 ## How to build from command line
 
@@ -76,20 +83,22 @@ cd [path/to/this/project]
 bash compile_run_with_conan.sh
 ```
 
-Format:
+### Format (based on `clang-format`)
 
 ```bash
 cmake --build [build_dir] --target format
 ```
 
-Package:
+### Package (based on `CPack`)
 
 ```bash
 cmake --build [build_dir] --target package
 ```
 
-Generate Docs
+### Generate Documentation (based on `doxygen` and `graphviz dot`)
 
 ```bash
+sudo apt update
+sudo apt install doxygen graphviz
 cmake --build [build_dir] --target doxygen-docs
 ```
