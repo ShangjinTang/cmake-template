@@ -21,7 +21,7 @@ print_seperate_line "1. Cleaning"
 rm -rf build &> /dev/null
 
 print_seperate_line "2. CMake: preparing build"
-cmake -S . -B build/Debug -DUSE_CONAN=FALSE
+cmake -S . -B build/Debug -DCMAKE_BUILD_TYPE=DEBUG -DUSE_CONAN=FALSE
 cp build/Debug/compile_commands.json .
 
 print_seperate_line "3. CMake: building"
