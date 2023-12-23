@@ -43,8 +43,9 @@ target_include_directories(
   ${TARGET_NAME}
   PUBLIC $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/exports>
   PRIVATE ${TARGET_INCLUDE_FOLDER} ${CMAKE_CURRENT_SOURCE_DIR}/../libhello/inc
+          ${CMAKE_CURRENT_SOURCE_DIR}/../libmymath/inc
           # Any other extra include required
 )
 
-# link against libhello
-target_link_libraries(${TARGET_NAME} PUBLIC libhello)
+# link against libhello and libmymath
+target_link_libraries(${TARGET_NAME} PUBLIC libhello libmymath)

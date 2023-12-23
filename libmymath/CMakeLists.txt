@@ -49,6 +49,9 @@ target_compile_definitions(${TARGET_NAME} PRIVATE ${compiler_definitions})
 # set target link options as defined in the cmake/compiler_options.cmake Module
 target_link_options(${TARGET_NAME} PRIVATE ${linker_flags})
 
+# link to target libraries
+target_link_libraries(${TARGET_NAME} PRIVATE Microsoft.GSL::GSL)
+
 # include all the necessary directories
 target_include_directories(
   ${TARGET_NAME}
