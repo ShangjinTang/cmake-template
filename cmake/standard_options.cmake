@@ -29,8 +29,9 @@ option(WARNINGS_AS_ERRORS "Treat compiler warnings as errors." OFF)
 # Static analyzers
 #
 
-option(ENABLE_CLANG_TIDY "Enable static analysis with clang-tidy." ON)
 option(ENABLE_CPPCHECK "Enable static analysis with cppcheck." ON)
+# clang-tidy is slow, disabled by default
+option(ENABLE_CLANG_TIDY "Enable static analysis with clang-tidy." OFF)
 
 #
 # Doxygen documentation
