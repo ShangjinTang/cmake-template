@@ -57,16 +57,17 @@ include(InstallRequiredSystemLibraries)
 include(GenerateExportHeader)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+
 # configurations
 include(standard_options)
 include(compiler_options)
 include(dependencies)
+
 # tools
 include(clang_tidy)
 include(clang_format)
 include(cpack)
 include(cppcheck)
-include(doxygen)
 
 # ##############################################################################
 # Define Targets
@@ -76,6 +77,12 @@ if(BUILD_EXECUTABLE)
 endif()
 add_subdirectory(libhello)
 add_subdirectory(libmymath)
+
+# generate docs
+if(ENABLE_DOXYGEN)
+  list(APPEND DOC_DIRS libhello/inc libhello/src libmymath/inc libmymath/src)
+  include(doxygen)
+endif()
 
 # ##############################################################################
 # Define Install Targets

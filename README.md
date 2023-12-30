@@ -86,19 +86,40 @@ bash compile_run_with_conan.sh
 ### Format (based on `clang-format`)
 
 ```bash
-cmake --build [build_dir] --target format
+cmake -S . -B build
+cmake --build build --target format
 ```
 
 ### Package (based on `CPack`)
 
 ```bash
-cmake --build [build_dir] --target package
+cmake -S . -B build
+cmake --build build --target package
 ```
 
 ### Generate Documentation (based on `doxygen` and `graphviz dot`)
 
+Prerequisite: make sure `doxygen` and `dot` (graphviz-dot) are available in your $PATH.
+
+For example, you can install them on Ubuntu with commands:
+
 ```bash
 sudo apt update
-sudo apt install doxygen graphviz
-cmake --build [build_dir] --target doxygen-docs
+sudo apt install -y doxygen graphviz
+```
+
+Specify `DOC_DIRS` in [top level CMakeLists.txt](./CMakeLists.txt):
+
+```cmake
+if(ENABLE_DOXYGEN)
+  list(APPEND DOC_DIRS libhello libmymath)
+  include(doxygen)
+endif()
+```
+
+Add option `ENABLE_DOXYGEN` to automatic generate docs
+
+```bash
+cmake -S . -B build -DENABLE_DOXYGEN=ON
+cmake --build build
 ```
