@@ -38,6 +38,7 @@ option(ENABLE_CLANG_TIDY "Enable static analysis with clang-tidy." OFF)
 #
 
 option(ENABLE_DOXYGEN "Enable Doxygen documentation builds of source." OFF)
+option(ENABLE_SPHINX "Enable Sphinx documentation builds of source." OFF)
 
 #
 # Enable Sanitizers (only for Debug version)

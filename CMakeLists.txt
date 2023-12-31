@@ -13,6 +13,9 @@ project(
   LANGUAGES CXX
   DESCRIPTION "")
 
+set(AUTHUR "shangjin.tang@gmail.com")
+set(PROJECT_NAME "AppHello")
+
 # Set Project version (used for library versioning and for CPack)
 set(CMAKE_PROJECT_VERSION_MAJOR 1)
 set(CMAKE_PROJECT_VERSION_MINOR 0)
@@ -78,8 +81,12 @@ endif()
 add_subdirectory(libhello)
 add_subdirectory(libmymath)
 
+# generate docs
+set(DOC_DIRS
+    ${PROJECT_SOURCE_DIR}/libhello/inc ${PROJECT_SOURCE_DIR}/libhello/src
+    ${PROJECT_SOURCE_DIR}/libmymath/inc ${PROJECT_SOURCE_DIR}/libmymath/src)
 include(doxygen)
-
+add_subdirectory(doc)
 # ##############################################################################
 # Define Install Targets
 # ##############################################################################

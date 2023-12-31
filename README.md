@@ -33,13 +33,15 @@ This repository aims to represent a template for Modern C++ projects, including 
 - Sanitizers: Address Sanitizer, Leak Sanitizer, Undefined Behaviour Sanitizer, ...
 - Support for shared/static libraries, including generation of export information
 - Basic CPack configuration for redistributables
-- Doxygen documentation generator (default `OFF`)
+- Optional Documentation generator
+  - Doxygen
+  - Sphinx
 
 ## Repository layout
 
 The repository layout is pretty straightforward, including the CMake files to build the project, a `conanfile` where are declared examples of dependencies, a suppression list for cppcheck and the C++ source code:
 
-```plain
+```text
 -- .clang-format                - the clang-format rules for the C++ project
 -- .clang-tidy                  - the clang-tidy rules for the C++ project
 -- .gitignore                   - files to be excluded by git
@@ -60,7 +62,7 @@ The repository layout is pretty straightforward, including the CMake files to bu
 -- cppcheck_suppressions.txt    - optional list of suppressions for cppcheck
 
 -- `build/`                     - working directory for the build
--- `docs/`                      - generate docs by `doxygen` & `dot`
+-- `doc/`                       - generate doc by `doxygen` and convert to `sphinx`
 ```
 
 ## Available CMake Options
@@ -97,9 +99,15 @@ cmake -S . -B build
 cmake --build build --target package
 ```
 
-### Generate Documentation (based on `doxygen` and `graphviz dot`)
+### Generate Documentation
 
-Prerequisite: make sure `doxygen` and `dot` (graphviz-dot) are available in your $PATH.
+#### Doxygen
+
+Prerequisites: make sure `doxygen` and `dot` (graphviz-dot) are available in your $PATH.
+
+- System Packages
+  - [Doxygen](https://github.com/doxygen/doxygen)
+  - [Graphviz](https://graphviz.org/)
 
 For example, you can install them on Ubuntu with commands:
 
@@ -123,3 +131,32 @@ Add option `ENABLE_DOXYGEN` to automatic generate docs
 cmake -S . -B build -DENABLE_DOXYGEN=ON
 cmake --build build
 ```
+
+The documents will be generated in `build/html`.
+
+#### Sphinx
+
+Prerequisites: make sure `doxygen` and `dot` (graphviz-dot) are available in your $PATH.
+
+- System Packages
+  - [Doxygen](https://github.com/doxygen/doxygen)
+- Python Packages
+  - [Sphinx](https://github.com/sphinx-doc/sphinx) & [Sphinx ReadTheDocs Theme](https://github.com/readthedocs/sphinx_rtd_theme)
+  - [Breathe](https://github.com/breathe-doc/breathe)
+  - [m2r2](https://github.com/CrossNox/m2r2)
+
+For example, you can install them on Ubuntu with commands:
+
+```bash
+sudo apt install doxygen
+pip install sphinx sphinx_rtd_theme breathe m2r2
+```
+
+Add option `ENABLE_SPHINX` to automatic generate docs
+
+```bash
+cmake -S . -B build -DENABLE_SPHINX=ON
+cmake --build build
+```
+
+The documents will be generated in `build/doc`.
