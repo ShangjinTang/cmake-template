@@ -78,11 +78,7 @@ endif()
 add_subdirectory(libhello)
 add_subdirectory(libmymath)
 
-# generate docs
-if(ENABLE_DOXYGEN)
-  list(APPEND DOC_DIRS libhello/inc libhello/src libmymath/inc libmymath/src)
-  include(doxygen)
-endif()
+include(doxygen)
 
 # ##############################################################################
 # Define Install Targets
