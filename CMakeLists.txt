@@ -86,7 +86,7 @@ set(DOC_DIRS
     ${PROJECT_SOURCE_DIR}/libhello/inc ${PROJECT_SOURCE_DIR}/libhello/src
     ${PROJECT_SOURCE_DIR}/libmymath/inc ${PROJECT_SOURCE_DIR}/libmymath/src)
 include(doxygen)
-add_subdirectory(doc)
+
 # ##############################################################################
 # Define Install Targets
 # ##############################################################################

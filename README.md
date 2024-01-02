@@ -33,9 +33,7 @@ This repository aims to represent a template for Modern C++ projects, including 
 - Sanitizers: Address Sanitizer, Leak Sanitizer, Undefined Behaviour Sanitizer, ...
 - Support for shared/static libraries, including generation of export information
 - Basic CPack configuration for redistributables
-- Optional Documentation generator
-  - Doxygen
-  - Sphinx
+- Documentation generator using `doxygen` (default `OFF`)
 
 ## Repository layout
 
@@ -49,10 +47,10 @@ The repository layout is pretty straightforward, including the CMake files to bu
   | -- clang_format.cmake       - C++ header/source format, usage: `--target format`
   | -- clang_tidy.cmake         - C++ static check tool
   | -- compiler-options.cmake   - Common compiler options for major platforms/compilers
-  | -- cpack.cmake              - Packaging configuration with CPack, usage: `--target doxygen-docs`
+  | -- cpack.cmake              - Packaging configuration with CPack, usage: `--target cpack`
   | -- cppcheck.cmake           - C++ static check tool
   | -- dependencies.cmake       - Project dependencies
-  | -- doxygen.cmake            - Generate documentation, usage: `--target doxygen-docs`
+  | -- doxygen.cmake            - Generate documentation, usage: `-DENABLE_DOXYGEN`
   | -- standard_options.cmake   - Standard options, can be overrided with "-D..."
 -- CMakeLists.txt               - the main `CMake` Project configuration file
 -- `apphello/`                  - your application files (including CMakeLists.txt, sources)
@@ -99,64 +97,28 @@ cmake -S . -B build
 cmake --build build --target package
 ```
 
-### Generate Documentation
+### Generate Documentation with Doxygen
 
-#### Doxygen
+1. Prerequisites: make sure `doxygen` and `dot` (graphviz-dot) are available in your $PATH.
 
-Prerequisites: make sure `doxygen` and `dot` (graphviz-dot) are available in your $PATH.
+   - System Packages
+     - [Doxygen](https://github.com/doxygen/doxygen)
+     - [Graphviz](https://graphviz.org/)
 
-- System Packages
-  - [Doxygen](https://github.com/doxygen/doxygen)
-  - [Graphviz](https://graphviz.org/)
+   For example, you can install them on Ubuntu with commands:
 
-For example, you can install them on Ubuntu with commands:
+   ```bash
+   sudo apt update
+   sudo apt install -y doxygen graphviz
+   ```
 
-```bash
-sudo apt update
-sudo apt install -y doxygen graphviz
-```
+2. Specify `DOC_DIRS` in [top level CMakeLists.txt](./CMakeLists.txt).
 
-Specify `DOC_DIRS` in [top level CMakeLists.txt](./CMakeLists.txt):
+3. Add option `ENABLE_DOXYGEN` to automatic generate docs.
 
-```cmake
-if(ENABLE_DOXYGEN)
-  list(APPEND DOC_DIRS libhello libmymath)
-  include(doxygen)
-endif()
-```
+   ```bash
+   cmake -S . -B build -DENABLE_DOXYGEN=ON
+   cmake --build build
+   ```
 
-Add option `ENABLE_DOXYGEN` to automatic generate docs
-
-```bash
-cmake -S . -B build -DENABLE_DOXYGEN=ON
-cmake --build build
-```
-
-The documents will be generated in `build/html`.
-
-#### Sphinx
-
-Prerequisites: make sure `doxygen` and `dot` (graphviz-dot) are available in your $PATH.
-
-- System Packages
-  - [Doxygen](https://github.com/doxygen/doxygen)
-- Python Packages
-  - [Sphinx](https://github.com/sphinx-doc/sphinx) & [Sphinx ReadTheDocs Theme](https://github.com/readthedocs/sphinx_rtd_theme)
-  - [Breathe](https://github.com/breathe-doc/breathe)
-  - [m2r2](https://github.com/CrossNox/m2r2)
-
-For example, you can install them on Ubuntu with commands:
-
-```bash
-sudo apt install doxygen
-pip install sphinx sphinx_rtd_theme breathe m2r2
-```
-
-Add option `ENABLE_SPHINX` to automatic generate docs
-
-```bash
-cmake -S . -B build -DENABLE_SPHINX=ON
-cmake --build build
-```
-
-The documents will be generated in `build/doc`.
+   The documents will be generated in `docs/html`.
