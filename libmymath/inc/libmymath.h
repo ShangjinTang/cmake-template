@@ -7,7 +7,7 @@
 
 #include "libmymath_export.h"
 
-namespace libmymath {
+namespace mymath {
 
 /**
  * @brief Performs add
@@ -29,4 +29,4 @@ int LIBMYMATH_EXPORT sub(int lhs, int rhs);
  */
 int LIBMYMATH_EXPORT get_fibonacci_at_index(int index);
 
-}  // namespace libmymath
+}  // namespace mymath
