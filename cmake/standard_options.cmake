@@ -14,6 +14,7 @@ option(USE_CONAN "Use the Conan package manager for this project." ON)
 #
 # Project settings
 #
+
 option(BUILD_TESTING "Build tests by default" ON)
 option(BUILD_EXECUTABLE
        "Build the project as an executable, rather than a library." ON)
@@ -57,8 +58,8 @@ option(ENABLE_DEBUG_ASAN "Enable Address Sanitizer in Debug Build" ON)
 option(ENABLE_DEBUG_LSAN "Enable Address Sanitizer in Debug Build" ON)
 option(ENABLE_DEBUG_UBSAN "Enable UndefinedBehavior Sanitizer in Debug Build"
        ON)
+# TSAN is conflict with ASAN, do not enable at the same time
 option(ENABLE_DEBUG_TSAN "Enable Thread Sanitizer in Debug Build" OFF)
-# TSAN is conflict with ASAN
 if(ENABLE_DEBUG_ASAN AND ENABLE_DEBUG_TSAN)
   message(
     FATAL_ERROR

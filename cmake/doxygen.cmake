@@ -22,7 +22,6 @@ if(DOXYGEN_FOUND)
   set(DOXYGEN_EXTRACT_ALL YES)
   set(DOXYGEN_GENERATE_HTML YES)
   set(DOXYGEN_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/docs)
-  set(DOXYGEN_EXCLUDE_PATTERNS "*/external/*")
   doxygen_add_docs(
     doxygen-doc ALL ${DOC_DIRS}
     COMMENT "Generating documentation with doxygen & graphviz-dot")
