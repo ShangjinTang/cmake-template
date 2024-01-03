@@ -2,6 +2,10 @@
 #
 # Clang-Format instructions
 
+if(NOT ENABLE_CLANG_FORMAT)
+  return()
+endif()
+
 find_program(CLANG_FORMAT_BIN NAMES clang-format)
 
 if(CLANG_FORMAT_BIN)
@@ -22,12 +26,8 @@ if(CLANG_FORMAT_BIN)
     COMMAND_EXPAND_LISTS VERBATIM)
 
   add_custom_target(
-    clang-format
+    clang-format ALL
     COMMENT "Running clang-format ..."
     DEPENDS format-sources format-headers)
 
-  add_custom_target(
-    format
-    COMMENT "Running format (alias for clang-format) ..."
-    DEPENDS clang-format)
 endif()

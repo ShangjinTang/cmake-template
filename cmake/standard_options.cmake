@@ -8,6 +8,7 @@ option(CMAKE_BUILD_TYPE "CMake build type." "Debug")
 # Package manager
 #
 
+# dependencies: conan (install with `pip3 install conan`)
 option(USE_CONAN "Use the Conan package manager for this project." ON)
 
 #
@@ -29,14 +30,23 @@ option(WARNINGS_AS_ERRORS "Treat compiler warnings as errors." OFF)
 # Static analyzers
 #
 
+# dependencies: cppcheck
 option(ENABLE_CPPCHECK "Enable static analysis with cppcheck." ON)
-# clang-tidy is slow, disabled by default
+# dependencies: clang-tidy
 option(ENABLE_CLANG_TIDY "Enable static analysis with clang-tidy." OFF)
+
+#
+# Code Format
+#
+
+# dependencies: clang-format
+option(ENABLE_CLANG_FORMAT "Enable code format with clang-format." OFF)
 
 #
 # Doxygen documentation
 #
 
+# dependencies: doxygen, graphviz dot
 option(ENABLE_DOXYGEN "Enable Doxygen documentation builds of source." OFF)
 
 #

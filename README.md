@@ -23,7 +23,9 @@ This repository aims to represent a template for Modern C++ projects, including 
     - `doctest` (required only if enable `BUILD_TESTING`)
     - `gtest` (required only if enable `BUILD_TESTING`)
 - `cppcheck` (optional)
-- `clang-format` (optional)
+- `clang-tidy` (optional)
+- `clang-format` (optional for code format)
+- `doxygen` & `graphviz` (optional for documentation generation)
 
 ## Features
 
@@ -76,34 +78,56 @@ Note: you can also manage dependency with `vcpkg`.
 
 ## How to build from command line
 
-The project can be built using the following commands:
+The project can be built using conan:
 
 ```bash
-cd [path/to/this/project]
-bash compile_run_with_conan.sh
+python3 -m pip install conan
+./compile_run_with_conan.sh
 ```
 
-### Format (based on `clang-format`)
+or using git submodules:
 
 ```bash
-cmake -S . -B build
-cmake --build build --target format
+./compile_run_without_conan.sh
 ```
 
-### Package (based on `CPack`)
+## Features
 
-```bash
-cmake -S . -B build
-cmake --build build --target package
-```
+### Test
+
+1. Add option `BUILD_TESTING` to automatic generate docs.
+
+   ```bash
+   cmake -S . -B build -DBUILD_TESTING=ON
+   ```
+
+2. Run tests.
+
+   ```bash
+   ctest --testdir build
+   ```
+
+### Code Format (based on `clang-format`)
+
+1. Prerequisites: make sure `clang-format` is available in your $PATH.
+
+   For example, you can install them on Ubuntu with commands:
+
+   ```bash
+   sudo apt update
+   sudo apt install -y clang-format
+   ```
+
+2. Add option `ENABLE_CLANG_FORMAT` to automatic generate docs.
+
+   ```bash
+   cmake -S . -B build -DENABLE_CLANG_FORMAT=ON
+   cmake --build build
+   ```
 
 ### Generate Documentation with Doxygen
 
-1. Prerequisites: make sure `doxygen` and `dot` (graphviz-dot) are available in your $PATH.
-
-   - System Packages
-     - [Doxygen](https://github.com/doxygen/doxygen)
-     - [Graphviz](https://graphviz.org/)
+1. Prerequisites: make sure [`doxygen`](https://github.com/doxygen/doxygen) and [`dot`](https://graphviz.org/) are available in your $PATH.
 
    For example, you can install them on Ubuntu with commands:
 
@@ -122,3 +146,22 @@ cmake --build build --target package
    ```
 
    The documents will be generated in `docs/html`.
+
+### Package (based on `CPack`)
+
+1. Use target `package` to pack.
+
+   It's recommended to build package with `Release` build type.
+
+   ```bash
+   cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+   cmake --build build --target package
+   ```
+
+   or
+
+   ```bash
+   cmake -S . -B build
+   cd build
+   cpack
+   ```
