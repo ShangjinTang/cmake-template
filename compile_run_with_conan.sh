@@ -4,10 +4,12 @@ COLOR_RESET=$(tput sgr0)
 COLOR_HIGHLIGHT=$(tput bold)$(tput setaf 6)
 
 if ! python3 -m pip show conan &> /dev/null; then
-    echo "please run 'python3 -m install conan' first"
-    if ! [[ -f ~/.conan2/profiles/default ]]; then
-        conan profile detect --force
-    fi
+    echo "Conan not found, please run 'python3 -m pip install conan'"
+    exit 1
+fi
+
+if ! [[ -f ~/.conan2/profiles/default ]]; then
+    conan profile detect --force
 fi
 
 function print_seperate_line() {
