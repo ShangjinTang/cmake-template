@@ -32,7 +32,7 @@ else(USE_CONAN)
   add_git_submodule(external/ms-gsl)
   if(BUILD_TESTING)
     add_git_submodule(external/doctest)
-    add_git_submodule(external/googltest)
+    add_git_submodule(external/googletest)
   endif()
 
 endif()
