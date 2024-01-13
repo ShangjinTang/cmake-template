@@ -22,16 +22,18 @@ function print_seperate_line() {
 print_seperate_line "1. Cleaning"
 rm -rf build &> /dev/null
 
-print_seperate_line "2. CMake: preparing build"
+print_seperate_line "2. conan: installing package"
 conan install . -s build_type=Debug --build=missing
+
+print_seperate_line "3. CMake: preparing build"
 cmake -S . -B build/Debug -DCMAKE_BUILD_TYPE=DEBUG -DCMAKE_TOOLCHAIN_FILE=build/Debug/generators/conan_toolchain.cmake
 cp build/Debug/compile_commands.json .
 
-print_seperate_line "3. CMake: building"
+print_seperate_line "4. CMake: building"
 cmake --build build/Debug --config Debug
 
-print_seperate_line "4. Running CTest"
+print_seperate_line "5. Running CTest"
 ctest --test-dir build/Debug
 
-print_seperate_line "5. Running apphello"
+print_seperate_line "6. Running apphello"
 ./build/Debug/apphello/apphello-d

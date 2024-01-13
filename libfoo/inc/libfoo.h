@@ -7,10 +7,8 @@
 
 #include <string>
 
-#include "libhello_export.h"
-
 namespace hello {
-class LIBHELLO_EXPORT libhello {
+class libhello {
 public:
     /**
      * @brief say something

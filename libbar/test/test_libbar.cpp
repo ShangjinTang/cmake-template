@@ -1,5 +1,5 @@
 #include "gtest/gtest.h"
-#include "libmymath.h"
+#include "libbar.h"
 
 // Demonstrate some basic assertions.
 TEST(MyMathTest, Add) {

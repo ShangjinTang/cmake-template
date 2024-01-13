@@ -1,4 +1,4 @@
-#include "libmymath.h"
+#include "libbar.h"
 
 #include <gsl/gsl>
 

@@ -1,7 +1,7 @@
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 
-#include "libhello.h"
+#include "libfoo.h"
 
 using hello::libhello;
 SCENARIO("Implementation shoud proceed successfully") {

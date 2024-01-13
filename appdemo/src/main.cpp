@@ -1,7 +1,7 @@
 #include <iostream>
 
-#include "libhello.h"
-#include "libmymath.h"
+#include "libbar.h"
+#include "libfoo.h"
 
 int main() {
     hello::libhello hello{};

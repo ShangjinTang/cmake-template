@@ -9,12 +9,12 @@ cmake_minimum_required(VERSION 3.15)
 
 # Define the Project Name and Description
 project(
-  project-hello
+  cmake-demo
   LANGUAGES CXX
   DESCRIPTION "")
 
 set(AUTHUR "shangjin.tang@gmail.com")
-set(PROJECT_NAME "AppHello")
+set(PROJECT_NAME "CMakeDemo")
 
 # Set Project version (used for library versioning and for CPack)
 set(CMAKE_PROJECT_VERSION_MAJOR 1)
@@ -33,9 +33,7 @@ if(PROJECT_SOURCE_DIR STREQUAL PROJECT_BINARY_DIR)
 endif()
 
 # Start building
-message(
-  STATUS
-    "Started CMake for ${CMAKE_PROJECT_NAME} v${CMAKE_PROJECT_VERSION}...\n")
+message(VERBOSE "Building ${CMAKE_PROJECT_NAME} v${CMAKE_PROJECT_VERSION}...")
 
 # Set required C++ Standard
 set(CMAKE_CXX_STANDARD 17)
@@ -76,15 +74,14 @@ include(cppcheck)
 # Define Targets
 # ##############################################################################
 if(BUILD_EXECUTABLE)
-  add_subdirectory(apphello)
+  add_subdirectory(appdemo)
 endif()
-add_subdirectory(libhello)
-add_subdirectory(libmymath)
+add_subdirectory(libfoo)
+add_subdirectory(libbar)
 
 # generate docs
-set(DOC_DIRS
-    ${PROJECT_SOURCE_DIR}/libhello/inc ${PROJECT_SOURCE_DIR}/libhello/src
-    ${PROJECT_SOURCE_DIR}/libmymath/inc ${PROJECT_SOURCE_DIR}/libmymath/src)
+set(DOC_DIRS ${PROJECT_SOURCE_DIR}/libfoo/inc ${PROJECT_SOURCE_DIR}/libfoo/src
+             ${PROJECT_SOURCE_DIR}/libbar/inc ${PROJECT_SOURCE_DIR}/libbar/src)
 include(doxygen)
 
 # ##############################################################################
@@ -92,7 +89,7 @@ include(doxygen)
 # ##############################################################################
 if(BUILD_EXECUTABLE)
   install(
-    TARGETS apphello
+    TARGETS appdemo
     RUNTIME DESTINATION bin
     LIBRARY DESTINATION lib
     ARCHIVE DESTINATION lib
@@ -100,14 +97,14 @@ if(BUILD_EXECUTABLE)
 endif()
 
 install(
-  TARGETS libhello libmymath
+  TARGETS libfoo libbar
   RUNTIME DESTINATION bin
   LIBRARY DESTINATION lib
   ARCHIVE DESTINATION lib
   PUBLIC_HEADER DESTINATION include)
 
-install(FILES ${CMAKE_SOURCE_DIR}/libhello/inc/libhello.h
-              ${CMAKE_BINARY_DIR}/exports/libhello_export.h
-        DESTINATION include/libhello)
+install(FILES ${CMAKE_SOURCE_DIR}/libfoo/inc/libfoo.h
+              ${CMAKE_BINARY_DIR}/exports/libfoo_export.h
+        DESTINATION include/libfoo)
 
 install(FILES ${CMAKE_SOURCE_DIR}/LICENSE DESTINATION .)
