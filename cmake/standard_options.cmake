@@ -32,7 +32,7 @@ option(WARNINGS_AS_ERRORS "Treat compiler warnings as errors." OFF)
 #
 
 # dependencies: cppcheck
-option(ENABLE_CPPCHECK "Enable static analysis with cppcheck." ON)
+option(ENABLE_CPPCHECK "Enable static analysis with cppcheck." OFF)
 # dependencies: clang-tidy
 option(ENABLE_CLANG_TIDY "Enable static analysis with clang-tidy." OFF)
 
