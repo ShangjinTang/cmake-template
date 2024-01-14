@@ -80,8 +80,14 @@ add_subdirectory(libfoo)
 add_subdirectory(libbar)
 
 # generate docs
-set(DOC_DIRS ${PROJECT_SOURCE_DIR}/libfoo/inc ${PROJECT_SOURCE_DIR}/libfoo/src
-             ${PROJECT_SOURCE_DIR}/libbar/inc ${PROJECT_SOURCE_DIR}/libbar/src)
+if(BUILD_EXECUTABLE)
+  set(DOC_DIRS ${PROJECT_SOURCE_DIR}/appdemo/inc
+               ${PROJECT_SOURCE_DIR}/appdemo/src)
+else()
+  set(DOC_DIRS
+      ${PROJECT_SOURCE_DIR}/libfoo/inc ${PROJECT_SOURCE_DIR}/libfoo/src
+      ${PROJECT_SOURCE_DIR}/libbar/inc ${PROJECT_SOURCE_DIR}/libbar/src)
+endif()
 include(doxygen)
 
 # ##############################################################################
