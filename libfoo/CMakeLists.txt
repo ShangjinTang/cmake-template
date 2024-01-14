@@ -41,6 +41,10 @@ endif()
 # Define Target Properties
 # ##############################################################################
 
+# if lib name starts with 'lib', remove it to avoid duplicate prefix 'lib'
+get_filename_component(LIB_NAME ${TARGET_NAME} NAME_WE)
+string(REGEX REPLACE "^lib" "" LIB_NAME ${LIB_NAME})
+
 # add target properties such as debug postfix, MSVC Runtime and library version
 set_target_properties(
   ${TARGET_NAME}
@@ -48,7 +52,8 @@ set_target_properties(
              MSVC_RUNTIME_LIBRARY "${MSVC_RUNTIME_TYPE}"
              VERSION ${CMAKE_PROJECT_VERSION}
              SOVERSION ${CMAKE_PROJECT_VERSION}
-             PUBLIC_HEADER ${PUBLIC_HEADER_FILES})
+             PUBLIC_HEADER ${PUBLIC_HEADER_FILES}
+             OUTPUT_NAME ${LIB_NAME})
 
 # set target compile options as defined in the cmake/compiler_options.cmake
 # Module
