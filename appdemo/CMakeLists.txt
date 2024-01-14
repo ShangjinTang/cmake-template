@@ -48,17 +48,11 @@ target_link_options(${TARGET_NAME} PRIVATE ${linker_flags})
 # include all the necessary directories
 target_include_directories(
   ${TARGET_NAME}
-  PUBLIC $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/exports>
   PRIVATE ${PRIVATE_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR}/../libfoo/inc
-          ${CMAKE_CURRENT_SOURCE_DIR}/../libbar/inc
-          # Any other extra include required
-)
+          ${CMAKE_CURRENT_SOURCE_DIR}/../libbar/inc)
 
 # include all the necessary directories
-target_include_directories(
-  ${TARGET_NAME}
-  PUBLIC $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/exports>
-  PRIVATE ${PRIVATE_INCLUDE_DIRS})
+target_include_directories(${TARGET_NAME} PRIVATE ${PRIVATE_INCLUDE_DIRS})
 
 # link to target libraries
 target_link_libraries(
@@ -88,12 +82,7 @@ if(BUILD_TESTING)
     target_compile_definitions(${TEST_CASE} PRIVATE ${compiler_definitions})
     target_link_options(${TEST_CASE} PRIVATE ${linker_flags})
 
-    target_include_directories(
-      ${TEST_CASE}
-      PUBLIC $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/exports>
-      PRIVATE ${PRIVATE_INCLUDE_DIRS}
-              # Any other extra include required
-    )
+    target_include_directories(${TEST_CASE} PRIVATE ${PRIVATE_INCLUDE_DIRS})
 
     add_test(NAME ${TEST_CASE} COMMAND ${TEST_CASE})
   endforeach(TEST_CASE ${TEST_CASES})

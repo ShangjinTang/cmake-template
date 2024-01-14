@@ -36,10 +36,6 @@ endif()
 # Define Target Properties
 # ##############################################################################
 
-# generate an export header to expose symbols when using the library
-generate_export_header(${TARGET_NAME} EXPORT_FILE_NAME
-                       ${CMAKE_BINARY_DIR}/exports/${TARGET_NAME}_export.h)
-
 # add target properties such as debug postfix, MSVC Runtime and library version
 set_target_properties(
   ${TARGET_NAME}
@@ -65,10 +61,7 @@ target_link_libraries(
   PUBLIC ${PUBLIC_LINKED_LIBRARIES})
 
 # include all the necessary directories
-target_include_directories(
-  ${TARGET_NAME}
-  PUBLIC $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/exports>
-  PRIVATE ${PRIVATE_INCLUDE_DIRS})
+target_include_directories(${TARGET_NAME} PRIVATE ${PRIVATE_INCLUDE_DIRS})
 
 if(BUILD_TESTING)
   foreach(TEST_SOURCE_FILE ${TEST_SOURCE_FILES})
@@ -86,12 +79,7 @@ if(BUILD_TESTING)
     target_compile_definitions(${TEST_CASE} PRIVATE ${compiler_definitions})
     target_link_options(${TEST_CASE} PRIVATE ${linker_flags})
 
-    target_include_directories(
-      ${TEST_CASE}
-      PUBLIC $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/exports>
-      PRIVATE ${PRIVATE_INCLUDE_DIRS}
-              # Any other extra include required
-    )
+    target_include_directories(${TEST_CASE} PRIVATE ${PRIVATE_INCLUDE_DIRS})
 
     add_test(NAME ${TEST_CASE} COMMAND ${TEST_CASE})
   endforeach(TEST_CASE ${TEST_CASES})

@@ -103,8 +103,4 @@ install(
   ARCHIVE DESTINATION lib
   PUBLIC_HEADER DESTINATION include)
 
-install(FILES ${CMAKE_SOURCE_DIR}/libfoo/inc/libfoo.h
-              ${CMAKE_BINARY_DIR}/exports/libfoo_export.h
-        DESTINATION include/libfoo)
-
 install(FILES ${CMAKE_SOURCE_DIR}/LICENSE DESTINATION .)
