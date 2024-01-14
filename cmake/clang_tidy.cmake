@@ -1,4 +1,4 @@
-# MIT License Copyright (c) 2023 Shangjin Tang <shangjin.tang@gmail.com>
+# MIT License Copyright (c) 2023-2024 Shangjin Tang <shangjin.tang@gmail.com>
 #
 # clang-tidy instructions
 
