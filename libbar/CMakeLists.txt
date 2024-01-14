@@ -6,7 +6,12 @@ set(TARGET_NAME libbar)
 # ##############################################################################
 # Define Target Information
 # ##############################################################################
-list(APPEND PRIVATE_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/inc)
+list(APPEND PUBLIC_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/inc)
+list(APPEND PRIVATE_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/src)
+file(GLOB PUBLIC_HEADER_FILES ${CMAKE_CURRENT_SOURCE_DIR}/inc/*.h
+     ${CMAKE_CURRENT_SOURCE_DIR}/inc/*.hpp)
+file(GLOB PRIVATE_HEADER_FILES ${CMAKE_CURRENT_SOURCE_DIR}/src/*.h
+     ${CMAKE_CURRENT_SOURCE_DIR}/src/*.hpp)
 file(GLOB SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
 file(GLOB TEST_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/test/*.cpp)
 
@@ -42,7 +47,8 @@ set_target_properties(
   PROPERTIES DEBUG_POSTFIX "-d"
              MSVC_RUNTIME_LIBRARY "${MSVC_RUNTIME_TYPE}"
              VERSION ${CMAKE_PROJECT_VERSION}
-             SOVERSION ${CMAKE_PROJECT_VERSION})
+             SOVERSION ${CMAKE_PROJECT_VERSION}
+             PUBLIC_HEADER ${PUBLIC_HEADER_FILES})
 
 # set target compile options as defined in the cmake/compiler_options.cmake
 # Module
@@ -61,7 +67,10 @@ target_link_libraries(
   PUBLIC ${PUBLIC_LINKED_LIBRARIES})
 
 # include all the necessary directories
-target_include_directories(${TARGET_NAME} PRIVATE ${PRIVATE_INCLUDE_DIRS})
+target_include_directories(
+  ${TARGET_NAME}
+  PUBLIC ${PUBLIC_INCLUDE_DIRS}
+  PRIVATE ${PRIVATE_INCLUDE_DIRS})
 
 if(BUILD_TESTING)
   foreach(TEST_SOURCE_FILE ${TEST_SOURCE_FILES})
@@ -79,7 +88,8 @@ if(BUILD_TESTING)
     target_compile_definitions(${TEST_CASE} PRIVATE ${compiler_definitions})
     target_link_options(${TEST_CASE} PRIVATE ${linker_flags})
 
-    target_include_directories(${TEST_CASE} PRIVATE ${PRIVATE_INCLUDE_DIRS})
+    target_include_directories(${TEST_CASE} PRIVATE ${PUBLIC_INCLUDE_DIRS}
+                                                    ${PRIVATE_INCLUDE_DIRS})
 
     add_test(NAME ${TEST_CASE} COMMAND ${TEST_CASE})
   endforeach(TEST_CASE ${TEST_CASES})

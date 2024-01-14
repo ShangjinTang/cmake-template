@@ -6,9 +6,20 @@ set(TARGET_NAME appdemo)
 # ##############################################################################
 # Define Target Information
 # ##############################################################################
-list(APPEND PRIVATE_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/inc
-     ${CMAKE_CURRENT_SOURCE_DIR}/../libfoo/inc
+list(APPEND PUBLIC_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/inc)
+list(APPEND PRIVATE_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/../libfoo/inc
      ${CMAKE_CURRENT_SOURCE_DIR}/../libbar/inc)
+file(GLOB PUBLIC_HEADER_FILES ${CMAKE_CURRENT_SOURCE_DIR}/inc/*.h
+     ${CMAKE_CURRENT_SOURCE_DIR}/inc/*.hpp)
+file(
+  GLOB
+  PRIVATE_HEADER_FILES
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/*.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/*.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/../libfoo/inc/*.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/../libfoo/inc/*.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/../libbar/inc/*.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/../libbar/inc/*.hpp)
 file(GLOB SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
 file(GLOB TEST_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/test/*.cpp)
 
@@ -30,10 +41,13 @@ add_executable(${TARGET_NAME} ${SOURCE_FILES})
 # Define Target Properties
 # ##############################################################################
 
-# add target properties such as debug postfix and MSVC runtime
+# add target properties such as debug postfix, MSVC Runtime and binary version
 set_target_properties(
-  ${TARGET_NAME} PROPERTIES DEBUG_POSTFIX "-d" MSVC_RUNTIME_LIBRARY
-                                               "${MSVC_RUNTIME_TYPE}")
+  ${TARGET_NAME}
+  PROPERTIES DEBUG_POSTFIX "-d"
+             MSVC_RUNTIME_LIBRARY "${MSVC_RUNTIME_TYPE}"
+             VERSION ${CMAKE_PROJECT_VERSION}
+             SOVERSION ${CMAKE_PROJECT_VERSION})
 
 # set target compile options as defined in the cmake/compiler_options.cmake
 # Module
@@ -45,26 +59,17 @@ target_compile_definitions(${TARGET_NAME} PRIVATE ${compiler_definitions})
 # set target link options as defined in the cmake/compiler_options.cmake Module
 target_link_options(${TARGET_NAME} PRIVATE ${linker_flags})
 
+# link to target libraries
+target_link_libraries(
+  ${TARGET_NAME}
+  PRIVATE ${PRIVATE_LINKED_LIBRARIES}
+  PUBLIC ${PUBLIC_LINKED_LIBRARIES})
+
 # include all the necessary directories
 target_include_directories(
   ${TARGET_NAME}
-  PRIVATE ${PRIVATE_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR}/../libfoo/inc
-          ${CMAKE_CURRENT_SOURCE_DIR}/../libbar/inc)
-
-# include all the necessary directories
-target_include_directories(${TARGET_NAME} PRIVATE ${PRIVATE_INCLUDE_DIRS})
-
-# link to target libraries
-target_link_libraries(
-  ${TARGET_NAME}
-  PRIVATE ${PRIVATE_LINKED_LIBRARIES}
-  PUBLIC ${PUBLIC_LINKED_LIBRARIES})
-
-# link to target libraries
-target_link_libraries(
-  ${TARGET_NAME}
-  PRIVATE ${PRIVATE_LINKED_LIBRARIES}
-  PUBLIC ${PUBLIC_LINKED_LIBRARIES})
+  PUBLIC ${PUBLIC_INCLUDE_DIRS}
+  PRIVATE ${PRIVATE_INCLUDE_DIRS})
 
 if(BUILD_TESTING)
   foreach(TEST_SOURCE_FILE ${TEST_SOURCE_FILES})
@@ -82,7 +87,8 @@ if(BUILD_TESTING)
     target_compile_definitions(${TEST_CASE} PRIVATE ${compiler_definitions})
     target_link_options(${TEST_CASE} PRIVATE ${linker_flags})
 
-    target_include_directories(${TEST_CASE} PRIVATE ${PRIVATE_INCLUDE_DIRS})
+    target_include_directories(${TEST_CASE} PRIVATE ${PUBLIC_INCLUDE_DIRS}
+                                                    ${PRIVATE_INCLUDE_DIRS})
 
     add_test(NAME ${TEST_CASE} COMMAND ${TEST_CASE})
   endforeach(TEST_CASE ${TEST_CASES})
