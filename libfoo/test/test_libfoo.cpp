@@ -3,11 +3,10 @@
 
 #include "libfoo.h"
 
-using hello::libhello;
 SCENARIO("Implementation shoud proceed successfully") {
     GIVEN("An implementation") {
         // WRITE here your implemented object
-        libhello hello{};
+        foo::Hello hello{};
         WHEN("it is called correctly") {
             // WRITE here something
             auto return_code = hello.saySomething("I love BDD");

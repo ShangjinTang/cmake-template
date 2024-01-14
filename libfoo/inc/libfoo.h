@@ -7,8 +7,8 @@
 
 #include <string>
 
-namespace hello {
-class libhello {
+namespace foo {
+class Hello {
 public:
     /**
      * @brief say something
@@ -16,4 +16,4 @@ public:
      */
     [[nodiscard]] int32_t saySomething(const std::string &something) const noexcept;
 };
-}  // namespace hello
+}  // namespace foo

@@ -1,13 +1,11 @@
 #include "gtest/gtest.h"
 #include "libbar.h"
 
-// Demonstrate some basic assertions.
-TEST(MyMathTest, Add) {
-    EXPECT_EQ(mymath::add(3, 4), 7);
-    EXPECT_EQ(mymath::add(38, 66), 104);
-}
-
-TEST(MyMathTest, Sub) {
-    EXPECT_EQ(mymath::sub(5, 2), 3);
-    EXPECT_EQ(mymath::sub(100, 7), 93);
+TEST(LibBarTest, Sub) {
+    EXPECT_EQ(bar::get_fibonacci_at_index(1), 1);
+    EXPECT_EQ(bar::get_fibonacci_at_index(2), 1);
+    EXPECT_EQ(bar::get_fibonacci_at_index(3), 2);
+    EXPECT_EQ(bar::get_fibonacci_at_index(4), 3);
+    EXPECT_EQ(bar::get_fibonacci_at_index(5), 5);
+    EXPECT_EQ(bar::get_fibonacci_at_index(6), 8);
 }
