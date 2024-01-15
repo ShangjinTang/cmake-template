@@ -3,18 +3,19 @@
 # External Dependencies
 
 if(USE_CONAN)
-  find_package(fmt REQUIRED)
-  find_package(spdlog REQUIRED)
-  find_package(Microsoft.GSL REQUIRED)
+  find_package(fmt QUIET REQUIRED)
+  find_package(spdlog QUIET REQUIRED)
+  find_package(Microsoft.GSL QUIET REQUIRED)
+  find_package(absl QUIET REQUIRED)
   if(BUILD_TESTING)
-    find_package(doctest REQUIRED)
-    find_package(GTest REQUIRED)
+    find_package(doctest QUIET REQUIRED)
+    find_package(GTest QUIET REQUIRED)
   endif()
 
 else(USE_CONAN)
 
   function(add_git_submodule dir)
-    find_package(Git REQUIRED)
+    find_package(Git QUIET REQUIRED)
     if(NOT EXISTS ${dir}/CMakeLists.txt)
       execute_process(
         COMMAND ${GIT_EXECUTABLE} submodule update --init --recursive -- ${dir}
@@ -29,6 +30,7 @@ else(USE_CONAN)
   add_git_submodule(external/fmt)
   add_git_submodule(external/spdlog)
   add_git_submodule(external/ms-gsl)
+  add_git_submodule(external/abseil-cpp)
   if(BUILD_TESTING)
     add_git_submodule(external/doctest)
     add_git_submodule(external/googletest)
@@ -37,15 +39,14 @@ else(USE_CONAN)
 endif()
 
 # ##############################################################################
-# common libraries
 
-list(APPEND COMMON_LINKED_LIBRARIES Microsoft.GSL::GSL)
+# common libraries
 list(APPEND COMMON_LINKED_LIBRARIES fmt)
 list(APPEND COMMON_LINKED_LIBRARIES spdlog::spdlog)
+list(APPEND COMMON_LINKED_LIBRARIES Microsoft.GSL::GSL)
+list(APPEND COMMON_LINKED_LIBRARIES absl::flags absl::flags_parse)
 
-# ##############################################################################
 # test libraries
-
 list(APPEND COMMON_LINKED_TEST_LIBRARIES gtest gtest_main)
 list(APPEND COMMON_LINKED_TEST_LIBRARIES doctest::doctest)
 

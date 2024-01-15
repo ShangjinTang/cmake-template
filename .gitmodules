@@ -18,3 +18,7 @@
 	branch = v4.0.0
 	path = external/ms-gsl
 	url = https://github.com/microsoft/GSL
+[submodule "external/abseil-cpp"]
+	branch = 20230802.1
+	path = external/abseil-cpp
+	url = https://github.com/abseil/abseil-cpp
