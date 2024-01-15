@@ -2,6 +2,43 @@
 
 This repository aims to represent a template for Modern C++ projects, including static analysis checks, autoformatting, a BDD/TDD capable test-suite and packaging.
 
+Note: files are globbed here, and it's an anti-pattern in CMake. It's used for simplifying file configuration while developing prototypes / demos.
+
+## Introduction
+
+Every subdirectory is a standalone project, starts with either `app` or `lib`
+
+- Directory tree should be as below:
+  ```text
+  .
+  ├── app<app_name>
+  │   ├── CMakeLists.txt
+  │   ├── inc/  # public header files
+  │   ├── src/  # sources, private header files
+  │   └── test/  # test files
+  ├── lib<lib_name>
+  │   ├── CMakeLists.txt
+  │   ├── inc/  # public header files
+  │   ├── src/  # sources, private header files
+  │   └── test/  # test files
+  ├── ...
+  ├── CMakeLists.txt
+  └── README.md
+  ```
+- Use the same `CMakeLists.txt` for every subdirectory (either `app` or `lib`).
+- By default, all executables in `app*` are linked with `lib*`:
+  - `appdemo` is linked with library `libfoo` and `libbar`
+- You can delete all `lib*` for executable-only project.
+- Link useful libraries for every subdirectory without install first, including:
+  - common libraries:
+    - `fmt`
+    - `spdlog`
+    - `ms-gsl`
+    - `abseil`
+  - test libraries:
+    - `doctest`
+    - `gtest`
+
 ## Resources
 
 - CMake:
@@ -13,19 +50,13 @@ This repository aims to represent a template for Modern C++ projects, including 
 
 ## Requirements
 
-- a modern C++17 compiler (`gcc-8`, `clang-6.0`, `MSVC 2017` or above)
+- a modern C++20 compiler (suggest to use `gcc-13`, `clang-17`, `MSVC 2022` or above)
 - [`cmake`](https://cmake.org) 3.15+
-- dependencies: either [`conan`](https://conan.io) 2.0+ (recommend) or `git submodule`
-  - libraries
-    - `spdlog` (required)
-    - `fmt` (required)
-  - test libraries
-    - `doctest` (required only if enable `BUILD_TESTING`)
-    - `gtest` (required only if enable `BUILD_TESTING`)
-- `cppcheck` (optional)
-- `clang-tidy` (optional)
-- `clang-format` (optional for code format)
-- `doxygen` & `graphviz` (optional for documentation generation)
+- either [`conan`](https://conan.io) 2.0+ (recommend) or `git submodule`
+- `cppcheck` (optional for code check, default disabled)
+- `clang-tidy` (optional for code check, default disabled)
+- `clang-format` (optional for code format, default disabled)
+- `doxygen` & `graphviz` (optional for documentation generation, default disabled)
 
 ## Features
 
@@ -35,7 +66,7 @@ This repository aims to represent a template for Modern C++ projects, including 
 - Sanitizers: Address Sanitizer, Leak Sanitizer, Undefined Behaviour Sanitizer, ...
 - Support for shared/static libraries, including generation of export information
 - Basic CPack configuration for redistributables
-- Documentation generator using `doxygen` (default `OFF`)
+- Documentation generator using `doxygen`
 
 ## Repository layout
 
@@ -55,14 +86,17 @@ The repository layout is pretty straightforward, including the CMake files to bu
   | -- doxygen.cmake            - Generate documentation, usage: `-DENABLE_DOXYGEN`
   | -- standard_options.cmake   - Standard options, can be overrided with "-D..."
 -- CMakeLists.txt               - the main `CMake` Project configuration file
--- `apphello/`                  - your application files (including CMakeLists.txt, sources)
--- `libhello/`                  - your library1 files (including CMakeLists.txt, sources, `doctest`)
--- `libmymath/`                 - your library2 files (including CMakeLists.txt, sources, `gtest`)
+-- `appdemo/`                   - application files (including CMakeLists.txt, sources)
+-- `libfoo/`                    - a library example (including CMakeLists.txt, sources, tests)
+-- `libbar/`                    - another library example (including CMakeLists.txt, sources, tests)
 -- conanfile.txt                - the main `conan` configuration file listing dependencies
 -- cppcheck_suppressions.txt    - optional list of suppressions for cppcheck
 
 -- `build/`                     - working directory for the build
 -- `doc/`                       - generate doc by `doxygen` and convert to `sphinx`
+
+-- compile_run_with_conan.sh    - compile script
+-- compile_run_without_conan.sh - compile script
 ```
 
 ## Available CMake Options
@@ -78,10 +112,10 @@ Note: you can also manage dependency with `vcpkg`.
 
 ## How to build from command line
 
-The project can be built using conan:
+The project can be built using `conan` with `pipx`:
 
 ```bash
-python3 -m pip install conan
+python3 -m pip install pipx && pipx install conan
 ./compile_run_with_conan.sh
 ```
 
