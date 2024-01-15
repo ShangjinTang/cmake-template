@@ -10,6 +10,7 @@ set(MY_CUSTOM_VERSION
 
 # set $TARGET_NAME as current directory name
 get_filename_component(TARGET_NAME ${CMAKE_CURRENT_SOURCE_DIR} NAME)
+
 if(TARGET_NAME MATCHES "^lib")
   set(IS_CURRENT_BUILD_LIB ON)
 elseif(TARGET_NAME MATCHES "^app")
@@ -54,11 +55,11 @@ if(IS_CURRENT_BUILD_LIB)
   else()
     add_library(${TARGET_NAME} STATIC ${SOURCE_FILES})
   endif()
+  # generate an export header to expose symbols when using the library
+  generate_export_header(${TARGET_NAME} EXPORT_FILE_NAME
+                         ${CMAKE_BINARY_DIR}/exports/${TARGET_NAME}_export.h)
 else()
   add_executable(${TARGET_NAME} ${SOURCE_FILES})
-  if(PROJECT_LIB_NAMES)
-    add_dependencies(${TARGET_NAME} ${PROJECT_LIB_NAMES})
-  endif()
 endif()
 
 # ##############################################################################
@@ -72,15 +73,16 @@ if(IS_CURRENT_BUILD_LIB)
   string(REGEX REPLACE "^lib" "" LIB_NAME ${LIB_NAME})
 
   file(GLOB PUBLIC_HEADER_FILES ${CMAKE_CURRENT_SOURCE_DIR}/inc/*.h
-       ${CMAKE_CURRENT_SOURCE_DIR}/inc/*.hpp)
+       ${CMAKE_CURRENT_SOURCE_DIR}/inc/*.hpp
+       ${CMAKE_BINARY_DIR}/exports/${TARGET_NAME}_export.h)
 
   set_target_properties(
     ${TARGET_NAME}
     PROPERTIES DEBUG_POSTFIX "-d"
                MSVC_RUNTIME_LIBRARY "${MSVC_RUNTIME_TYPE}"
-               VERSION ${MY_CUSTOM_VERSION}
+               VERSION ${CMAKE_PROJECT_VERSION}
                SOVERSION ${MY_CUSTOM_MAJOR_VERSION}
-               PUBLIC_HEADER ${PUBLIC_HEADER_FILES}
+               PUBLIC_HEADER "${PUBLIC_HEADER_FILES}"
                OUTPUT_NAME ${LIB_NAME})
 else()
   get_filename_component(EXECUTABLE_NAME ${TARGET_NAME} NAME)
@@ -91,8 +93,8 @@ else()
     ${TARGET_NAME}
     PROPERTIES DEBUG_POSTFIX "-d"
                MSVC_RUNTIME_LIBRARY "${MSVC_RUNTIME_TYPE}"
+               VERSION ${CMAKE_PROJECT_VERSION}
                VERSION ${MY_CUSTOM_VERSION}
-               SOVERSION ${MY_CUSTOM_MAJOR_VERSION}
                OUTPUT_NAME ${EXECUTABLE_NAME})
 endif()
 
@@ -115,7 +117,7 @@ target_link_libraries(
 # include all the necessary directories
 target_include_directories(
   ${TARGET_NAME}
-  PUBLIC ${PUBLIC_INCLUDE_DIRS}
+  PUBLIC ${PUBLIC_INCLUDE_DIRS} $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/exports>
   PRIVATE ${PRIVATE_INCLUDE_DIRS})
 
 if(BUILD_TESTING)
@@ -134,8 +136,10 @@ if(BUILD_TESTING)
     target_compile_definitions(${TEST_CASE} PRIVATE ${compiler_definitions})
     target_link_options(${TEST_CASE} PRIVATE ${linker_flags})
 
-    target_include_directories(${TEST_CASE} PRIVATE ${PUBLIC_INCLUDE_DIRS}
-                                                    ${PRIVATE_INCLUDE_DIRS})
+    target_include_directories(
+      ${TEST_CASE}
+      PUBLIC $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/exports>
+      PRIVATE ${PUBLIC_INCLUDE_DIRS} ${PRIVATE_INCLUDE_DIRS})
 
     add_test(NAME ${TEST_CASE} COMMAND ${TEST_CASE})
   endforeach(TEST_CASE ${TEST_CASES})

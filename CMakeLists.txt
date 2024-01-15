@@ -89,6 +89,9 @@ if(BUILD_EXECUTABLE)
 endif()
 foreach(lib_name ${PROJECT_LIB_NAMES})
   add_subdirectory(${lib_name})
+  if(PROJECT_LIB_NAMES)
+    add_dependencies(${app_name} ${PROJECT_LIB_NAMES})
+  endif()
 endforeach()
 
 # generate docs

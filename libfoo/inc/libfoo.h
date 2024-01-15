@@ -7,8 +7,10 @@
 
 #include <string>
 
+#include "libfoo_export.h"
+
 namespace foo {
-class Hello {
+class LIBFOO_EXPORT Hello {
 public:
     /**
      * @brief say something
