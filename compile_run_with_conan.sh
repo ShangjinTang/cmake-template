@@ -3,8 +3,10 @@
 COLOR_RESET=$(tput sgr0)
 COLOR_HIGHLIGHT=$(tput bold)$(tput setaf 6)
 
-if ! python3 -m pip show conan &> /dev/null; then
-    echo "Conan not found, please run 'python3 -m pip install conan'"
+CURRENT_DIR=$(pwd)
+
+if ! command -v conan &> /dev/null; then
+    echo "Conan not found, please run 'python3 -m pip install conan' or 'pipx install conan'"
     exit 1
 fi
 
@@ -35,5 +37,5 @@ cmake --build build/Debug --config Debug
 print_seperate_line "5. Running CTest"
 ctest --test-dir build/Debug
 
-print_seperate_line "6. Running apphello"
-./build/Debug/apphello/apphello-d
+print_seperate_line "6. Running appdemo"
+./build/Debug/appdemo/appdemo-d
