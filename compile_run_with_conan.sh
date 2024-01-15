@@ -38,4 +38,4 @@ print_seperate_line "5. Running CTest"
 ctest --test-dir build/Debug
 
 print_seperate_line "6. Running appdemo"
-./build/Debug/appdemo/appdemo-d
+./build/Debug/appdemo/demo-d

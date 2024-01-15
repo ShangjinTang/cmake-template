@@ -1,25 +1,44 @@
 # MIT License Copyright (c) 2023-2024 Shangjin Tang <shangjin.tang@gmail.com>
 #
-# libfoo target instructions
-set(TARGET_NAME libfoo)
+
+set(MY_CUSTOM_MAJOR_VERSION 1)
+set(MY_CUSTOM_MINOR_VERSION 0)
+set(MY_CUSTOM_PATCH_VERSION 0)
+set(MY_CUSTOM_VERSION
+    ${MY_CUSTOM_MAJOR_VERSION}.${MY_CUSTOM_MINOR_VERSION}.${MY_CUSTOM_PATCH_VERSION}
+)
+
+# set $TARGET_NAME as current directory name
+get_filename_component(TARGET_NAME ${CMAKE_CURRENT_SOURCE_DIR} NAME)
+if(TARGET_NAME MATCHES "^lib")
+  set(IS_CURRENT_BUILD_LIB ON)
+elseif(TARGET_NAME MATCHES "^app")
+  set(IS_CURRENT_BUILD_LIB OFF)
+endif()
+
+# linked libraries
+#
+list(APPEND PRIVATE_LINKED_LIBRARIES ${COMMON_LINKED_LIBRARIES})
+
+if(BUILD_TESTING)
+  set(TEST_LINKED_LIBRARY ${COMMON_LINKED_TEST_LIBRARIES})
+endif()
 
 # ##############################################################################
 # Define Target Information
 # ##############################################################################
 list(APPEND PUBLIC_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/inc)
 list(APPEND PRIVATE_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/src)
-file(GLOB PUBLIC_HEADER_FILES ${CMAKE_CURRENT_SOURCE_DIR}/inc/*.h
-     ${CMAKE_CURRENT_SOURCE_DIR}/inc/*.hpp)
+if(NOT IS_CURRENT_BUILD_LIB)
+  foreach(lib_name ${PROJECT_LIB_NAMES})
+    list(APPEND PRIVATE_INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/${lib_name}/inc})
+    list(APPEND PRIVATE_LINKED_LIBRARIES ${lib_name})
+  endforeach()
+endif()
 file(GLOB SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
 file(GLOB TEST_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/test/*.cpp)
 
-# list(APPEND PRIVATE_LINKED_LIBRARIES ...)
-
 # list(APPEND PUBLIC_LINKED_LIBRARIES ...)
-
-if(BUILD_TESTING)
-  set(TEST_LINKED_LIBRARY doctest::doctest)
-endif()
 
 # ##############################################################################
 # Support IDE Visualization
@@ -29,29 +48,53 @@ source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${SOURCE_FILES})
 # ##############################################################################
 # Define Target according to options
 # ##############################################################################
-if(BUILD_SHARED_LIBS)
-  add_library(${TARGET_NAME} SHARED ${SOURCE_FILES})
+if(IS_CURRENT_BUILD_LIB)
+  if(BUILD_SHARED_LIBS)
+    add_library(${TARGET_NAME} SHARED ${SOURCE_FILES})
+  else()
+    add_library(${TARGET_NAME} STATIC ${SOURCE_FILES})
+  endif()
 else()
-  add_library(${TARGET_NAME} STATIC ${SOURCE_FILES})
+  add_executable(${TARGET_NAME} ${SOURCE_FILES})
+  if(PROJECT_LIB_NAMES)
+    add_dependencies(${TARGET_NAME} ${PROJECT_LIB_NAMES})
+  endif()
 endif()
 
 # ##############################################################################
 # Define Target Properties
 # ##############################################################################
 
-# if lib name starts with 'lib', remove it to avoid duplicate prefix 'lib'
-get_filename_component(LIB_NAME ${TARGET_NAME} NAME_WE)
-string(REGEX REPLACE "^lib" "" LIB_NAME ${LIB_NAME})
+# if executable name starts with 'app', remove prefix 'app' as output name
+if(IS_CURRENT_BUILD_LIB)
+  # if lib name starts with 'lib', remove it to avoid duplicate prefix 'lib'
+  get_filename_component(LIB_NAME ${TARGET_NAME} NAME)
+  string(REGEX REPLACE "^lib" "" LIB_NAME ${LIB_NAME})
 
-# add target properties such as debug postfix, MSVC Runtime and library version
-set_target_properties(
-  ${TARGET_NAME}
-  PROPERTIES DEBUG_POSTFIX "-d"
-             MSVC_RUNTIME_LIBRARY "${MSVC_RUNTIME_TYPE}"
-             VERSION ${CMAKE_PROJECT_VERSION}
-             SOVERSION ${CMAKE_PROJECT_VERSION}
-             PUBLIC_HEADER ${PUBLIC_HEADER_FILES}
-             OUTPUT_NAME ${LIB_NAME})
+  file(GLOB PUBLIC_HEADER_FILES ${CMAKE_CURRENT_SOURCE_DIR}/inc/*.h
+       ${CMAKE_CURRENT_SOURCE_DIR}/inc/*.hpp)
+
+  set_target_properties(
+    ${TARGET_NAME}
+    PROPERTIES DEBUG_POSTFIX "-d"
+               MSVC_RUNTIME_LIBRARY "${MSVC_RUNTIME_TYPE}"
+               VERSION ${CMAKE_PROJECT_VERSION}
+               SOVERSION ${MY_CUSTOM_MAJOR_VERSION}
+               PUBLIC_HEADER ${PUBLIC_HEADER_FILES}
+               OUTPUT_NAME ${LIB_NAME})
+else()
+  get_filename_component(EXECUTABLE_NAME ${TARGET_NAME} NAME)
+  string(REGEX REPLACE "^app" "" EXECUTABLE_NAME ${EXECUTABLE_NAME})
+
+  # add target properties such as debug postfix, MSVC Runtime and binary version
+  set_target_properties(
+    ${TARGET_NAME}
+    PROPERTIES DEBUG_POSTFIX "-d"
+               MSVC_RUNTIME_LIBRARY "${MSVC_RUNTIME_TYPE}"
+               VERSION ${CMAKE_PROJECT_VERSION}
+               VERSION ${MY_CUSTOM_VERSION}
+               OUTPUT_NAME ${EXECUTABLE_NAME})
+endif()
 
 # set target compile options as defined in the cmake/compiler_options.cmake
 # Module

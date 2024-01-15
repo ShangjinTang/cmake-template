@@ -3,7 +3,6 @@
 # External Dependencies
 
 if(USE_CONAN)
-
   find_package(fmt REQUIRED)
   find_package(spdlog REQUIRED)
   find_package(Microsoft.GSL REQUIRED)
@@ -36,3 +35,18 @@ else(USE_CONAN)
   endif()
 
 endif()
+
+# ##############################################################################
+# common libraries
+
+list(APPEND COMMON_LINKED_LIBRARIES Microsoft.GSL::GSL)
+list(APPEND COMMON_LINKED_LIBRARIES fmt)
+list(APPEND COMMON_LINKED_LIBRARIES spdlog::spdlog)
+
+# ##############################################################################
+# test libraries
+
+list(APPEND COMMON_LINKED_TEST_LIBRARIES gtest gtest_main)
+list(APPEND COMMON_LINKED_TEST_LIBRARIES doctest::doctest)
+
+# ##############################################################################

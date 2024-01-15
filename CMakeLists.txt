@@ -73,20 +73,35 @@ include(cppcheck)
 # ##############################################################################
 # Define Targets
 # ##############################################################################
+file(
+  GLOB PROJECT_APP_NAMES
+  RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
+  app*)
+file(
+  GLOB PROJECT_LIB_NAMES
+  RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
+  lib*)
+
 if(BUILD_EXECUTABLE)
-  add_subdirectory(appdemo)
+  foreach(app_name ${PROJECT_APP_NAMES})
+    add_subdirectory(${app_name})
+  endforeach()
 endif()
-add_subdirectory(libfoo)
-add_subdirectory(libbar)
+foreach(lib_name ${PROJECT_LIB_NAMES})
+  add_subdirectory(${lib_name})
+endforeach()
 
 # generate docs
 if(BUILD_EXECUTABLE)
-  set(DOC_DIRS ${PROJECT_SOURCE_DIR}/appdemo/inc
-               ${PROJECT_SOURCE_DIR}/appdemo/src)
+  foreach(app_name ${PROJECT_APP_NAMES})
+    list(APPEND DOC_DIRS ${PROJECT_SOURCE_DIR}/${app_name}/inc
+         ${PROJECT_SOURCE_DIR}/${app_name}/src)
+  endforeach()
 else()
-  set(DOC_DIRS
-      ${PROJECT_SOURCE_DIR}/libfoo/inc ${PROJECT_SOURCE_DIR}/libfoo/src
-      ${PROJECT_SOURCE_DIR}/libbar/inc ${PROJECT_SOURCE_DIR}/libbar/src)
+  foreach(lib_name ${PROJECT_LIB_NAMES})
+    list(APPEND DOC_DIRS ${PROJECT_SOURCE_DIR}/${lib_name}/inc
+         ${PROJECT_SOURCE_DIR}/${lib_name}/src)
+  endforeach()
 endif()
 include(doxygen)
 
@@ -95,14 +110,14 @@ include(doxygen)
 # ##############################################################################
 if(BUILD_EXECUTABLE)
   install(
-    TARGETS appdemo
+    TARGETS ${PROJECT_APP_NAMES}
     RUNTIME DESTINATION bin
     LIBRARY DESTINATION lib
     ARCHIVE DESTINATION lib
     PUBLIC_HEADER DESTINATION include)
 else()
   install(
-    TARGETS libfoo libbar
+    TARGETS ${PROJECT_LIB_NAMES}
     RUNTIME DESTINATION bin
     LIBRARY DESTINATION lib
     ARCHIVE DESTINATION lib
