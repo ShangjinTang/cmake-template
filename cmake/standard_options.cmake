@@ -19,7 +19,13 @@ option(BUILD_TESTING "Build tests by default" ON)
 option(BUILD_EXECUTABLE
        "Build the project as an executable, rather than a library." ON)
 option(BUILD_HEADERS_ONLY "Build the project as a header-only library." OFF)
+
 option(BUILD_SHARED_LIBS "Build shared libraries" OFF)
+if(BUILD_SHARED_LIBS)
+  set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS OFF)
+  set(CMAKE_CXX_VISIBILITY_PRESET hidden)
+  set(CMAKE_VISIBILITY_INLINES_HIDDEN 1)
+endif()
 
 #
 # Compiler options
@@ -75,12 +81,6 @@ option(ENABLE_CCACHE
 if(MSVC)
   option(BUILD_WITH_MT "Build libraries as MultiThreaded DLL (Windows Only)"
          FALSE)
-endif()
-
-if(BUILD_SHARED_LIBS)
-  set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS OFF)
-  set(CMAKE_CXX_VISIBILITY_PRESET hidden)
-  set(CMAKE_VISIBILITY_INLINES_HIDDEN 1)
 endif()
 
 find_program(CCACHE_FOUND ccache)

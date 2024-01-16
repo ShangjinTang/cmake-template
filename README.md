@@ -199,3 +199,31 @@ or using git submodules:
    cd build
    cpack
    ```
+
+## Build shared libraries
+
+Let's check the options in [standard_options.cmake](./cmake/standard_options.cmake) first:
+
+```cmake
+# build static libraries by default
+option(BUILD_SHARED_LIBS "Build shared libraries" OFF)
+# for shared libraries, symbols are default hidden to avoid symbol conflicts
+if(BUILD_SHARED_LIBS)
+  set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS OFF)
+  set(CMAKE_CXX_VISIBILITY_PRESET hidden)
+  set(CMAKE_VISIBILITY_INLINES_HIDDEN 1)
+endif()
+```
+
+To build shared libraries:
+
+1. In header files, specify which symbols are exported with macro `LIB*_EXPORT`:
+
+   - include `lib<lib_name>_export.h`
+   - add `LIB<LIB_NAME>_EXPORT` before symbols to mark them as exported
+
+   Note: This is similar to [`GTEST_API_` in Google Test](https://github.com/google/googletest/blob/v1.14.0/googletest/include/gtest/internal/gtest-port.h#L836).
+
+   For usage, see header files [libbar.h](./libbar/inc/libbar.h) and [libbar.h](./libbar/inc/libbar.h).
+
+2. In build procedure, add option `-DBUILD_SHARED_LIBS=ON`.
