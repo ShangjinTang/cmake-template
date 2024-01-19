@@ -87,13 +87,13 @@ file(
 if(BUILD_EXECUTABLE)
   foreach(app_name ${PROJECT_APP_NAMES})
     add_subdirectory(${app_name})
+    if(PROJECT_LIB_NAMES)
+      add_dependencies(${app_name} ${PROJECT_LIB_NAMES})
+    endif()
   endforeach()
 endif()
 foreach(lib_name ${PROJECT_LIB_NAMES})
   add_subdirectory(${lib_name})
-  if(PROJECT_LIB_NAMES)
-    add_dependencies(${app_name} ${PROJECT_LIB_NAMES})
-  endif()
 endforeach()
 
 # generate docs

@@ -26,7 +26,7 @@ if(NOT IS_CURRENT_BUILD_LIB)
 endif()
 
 if(BUILD_TESTING)
-  set(TEST_LINKED_LIBRARY ${COMMON_LINKED_TEST_LIBRARIES})
+  set(TEST_LINKED_LIBRARIES ${COMMON_LINKED_TEST_LIBRARIES})
 endif()
 
 # ##############################################################################
@@ -101,7 +101,6 @@ else()
                VERSION ${MY_CUSTOM_VERSION}
                OUTPUT_NAME ${EXECUTABLE_NAME})
 endif()
-
 # set target compile options as defined in the cmake/compiler_options.cmake
 # Module
 target_compile_options(${TARGET_NAME} PRIVATE ${compiler_options})
@@ -134,8 +133,10 @@ if(BUILD_TESTING)
 
   foreach(TEST_CASE ${TEST_CASES})
     add_executable(${TEST_CASE} ${CMAKE_CURRENT_SOURCE_DIR}/test/${TEST_CASE})
-    target_link_libraries(${TEST_CASE} PRIVATE ${TARGET_NAME}
-                                               ${TEST_LINKED_LIBRARY})
+    target_link_libraries(${TEST_CASE} PRIVATE ${TEST_LINKED_LIBRARIES})
+    if(IS_CURRENT_BUILD_LIB)
+      target_link_libraries(${TEST_CASE} PRIVATE ${TARGET_NAME})
+    endif()
     target_compile_options(${TEST_CASE} PRIVATE ${compiler_options})
     target_compile_definitions(${TEST_CASE} PRIVATE ${compiler_definitions})
     target_link_options(${TEST_CASE} PRIVATE ${linker_flags})
