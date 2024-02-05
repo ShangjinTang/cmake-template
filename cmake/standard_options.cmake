@@ -5,13 +5,6 @@
 option(CMAKE_BUILD_TYPE "CMake build type." "Debug")
 
 #
-# Package manager
-#
-
-# dependencies: conan (install with `pip3 install conan`)
-option(USE_CONAN "Use the Conan package manager for this project." ON)
-
-#
 # Project settings
 #
 

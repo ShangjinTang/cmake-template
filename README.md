@@ -52,7 +52,7 @@ Every subdirectory is a standalone project, starts with either `app` or `lib`
 
 - a modern C++20 compiler (suggest to use `gcc-13`, `clang-17`, `MSVC 2022` or above)
 - [`cmake`](https://cmake.org) 3.15+
-- either [`conan`](https://conan.io) 2.0+ (recommend) or `git submodule`
+- [`conan`](https://conan.io) 2.0+
 - `cppcheck` (optional for code check, default disabled)
 - `clang-tidy` (optional for code check, default disabled)
 - `clang-format` (optional for code format, default disabled)
@@ -61,7 +61,7 @@ Every subdirectory is a standalone project, starts with either `app` or `lib`
 ## Features
 
 - CMake-based project management, including dependencies
-- Conan support for dependency management in CMake, completely optional
+- Conan support for dependency management in CMake
 - Code check tools such as `clang-format`, `cppcheck`
 - Sanitizers: Address Sanitizer, Leak Sanitizer, Undefined Behaviour Sanitizer, ...
 - Support for shared/static libraries, including generation of export information
@@ -103,26 +103,15 @@ The repository layout is pretty straightforward, including the CMake files to bu
 
 Please see [Standard Options](cmake/standard_options.cmake) to check all available options.
 
-## Why choose `conan` over `git submodules`?
-
-1. Build time is shorter.
-2. Dependencies management easier.
-
-Note: you can also manage dependency with `vcpkg`.
-
 ## How to build from command line
 
-The project can be built using `conan` with `pipx`:
+The project requires built using `conan` with `pipx`:
 
 ```bash
-python3 -m pip install pipx && pipx install conan
-./compile_run_with_conan.sh
-```
-
-or using git submodules:
-
-```bash
-./compile_run_without_conan.sh
+python3 -m pip install pipx
+pipx ensurepath
+pipx install conan
+./compile_run.sh
 ```
 
 ## Features
