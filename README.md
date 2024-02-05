@@ -95,8 +95,7 @@ The repository layout is pretty straightforward, including the CMake files to bu
 -- `build/`                     - working directory for the build
 -- `doc/`                       - generate doc by `doxygen` and convert to `sphinx`
 
--- compile_run_with_conan.sh    - compile script
--- compile_run_without_conan.sh - compile script
+-- compile_run.sh    - compile script
 ```
 
 ## Available CMake Options
@@ -216,3 +215,13 @@ To build shared libraries:
    For usage, see header files [libbar.h](./libbar/inc/libbar.h) and [libbar.h](./libbar/inc/libbar.h).
 
 2. In build procedure, add option `-DBUILD_SHARED_LIBS=ON`.
+
+## Other Ways to Manage Dependencies
+
+- use other package manager
+  - [`vcpkg`](https://vcpkg.io/)
+- use cmake builtin dependency management
+  - [`FetchContent`](https://cmake.org/cmake/help/latest/module/FetchContent.html)
+  - [`ExternalProject`](https://cmake.org/cmake/help/latest/module/ExternalProject.html)
+- use `git submodules` for completely offline support
+  - it's supported in previous revisions, but is now removed to simplify this template; see [commit: remove 'git submodules' support](https://github.com/ShangjinTang/cmake-template/commit/a0f5f030bd73fa7c6cda63c5eedc1ba3d63fda57)
