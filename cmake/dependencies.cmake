@@ -14,7 +14,7 @@ endif()
 # ##############################################################################
 
 # common libraries
-list(APPEND COMMON_LINKED_LIBRARIES fmt)
+list(APPEND COMMON_LINKED_LIBRARIES fmt::fmt)
 list(APPEND COMMON_LINKED_LIBRARIES spdlog::spdlog)
 list(APPEND COMMON_LINKED_LIBRARIES Microsoft.GSL::GSL)
 list(APPEND COMMON_LINKED_LIBRARIES absl::flags absl::flags_parse)
