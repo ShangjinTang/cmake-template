@@ -3,9 +3,9 @@
 [requires]
 # common libraries
 abseil/20230802.1
-fmt/10.1.1
+fmt/10.2.1
 ms-gsl/4.0.0
-spdlog/1.12.0
+spdlog/1.13.0
 # test libraries
 doctest/2.4.11
 gtest/1.14.0
