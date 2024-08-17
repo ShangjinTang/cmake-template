@@ -2,12 +2,11 @@
 #include <string>
 
 #include "fmt/core.h"
-#include "gsl/gsl"
 #include "spdlog/spdlog.h"
 
 #define ENABLE_CUSTOM_LIBS
 #define ENABLE_MSGSL_EXAMPLES
-#define ENABLE_ABSL_FLAGS
+#define ENABLE_CXXOPTS
 #define ENABLE_DOCTEST
 #define ENABLE_GTEST
 
@@ -38,22 +37,34 @@ TEST(Subtraction, Integers) {
 }
 #endif
 
-#ifdef ENABLE_ABSL_FLAGS
-#include "absl/flags/flag.h"
-#include "absl/flags/parse.h"
-
-// abseil flags: ABSL_FLAG(type, name, default, help-text)
-// NOLINTNEXTLINE
-ABSL_FLAG(std::string, powered_by, "abseil-cpp", "Powered-By Information");
+#ifdef ENABLE_CXXOPTS
+#include "cxxopts.hpp"
 #endif
 
 #ifdef ENABLE_MSGSL_EXAMPLES
+#include "gsl/pointers"
 size_t getStringLength(gsl::not_null<std::string *> strPtr) {
     return strPtr->length();
 }
 #endif
 
 int main([[maybe_unused]] int argc, [[maybe_unused]] char *argv[]) {
+#ifdef ENABLE_CXXOPTS
+    cxxopts::Options options("demo", "A demo program of cmake-template");
+    /* clang-format off */
+    options.add_options()
+        ("powered_by", "Powered-By Information", cxxopts::value<std::string>()->default_value("cxxopts"))
+        ("h, help", "Print usage")
+    ;
+    /* clang-format on */
+    auto result = options.parse(argc, argv);
+    if (static_cast<bool>(result.count("help"))) {
+        std::cout << options.help() << std::endl;
+        exit(0);
+    }
+    std::string powered_by = result["powered_by"].as<std::string>();
+    std::cout << "Support parse flags, powered by: " << powered_by << std::endl;
+#endif
     std::cout << "----------------------------------------------------------------------\n";
 
 #ifdef ENABLE_CUSTOM_LIBS
@@ -67,24 +78,21 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char *argv[]) {
     std::cout << "fibonacci sequence at index 10 is: " << bar::get_fibonacci_at_index(10) << std::endl;
 #endif
 
-#ifdef ENABLE_ABSL_FLAGS
-    absl::ParseCommandLine(argc, argv);
-    std::cout << "Support parse flags, powered by: " << absl::GetFlag(FLAGS_powered_by) << std::endl;
-#endif
-
 #ifdef ENABLE_DOCTEST
     doctest::Context context;
     int doctest_res = context.run();
     context.applyCommandLine(argc, argv);
-    if (context.shouldExit())
+    if (context.shouldExit()) {
         return doctest_res;
+    }
 #endif
 
 #ifdef ENABLE_GTEST
     ::testing::InitGoogleTest(&argc, argv);
     int gtest_res = RUN_ALL_TESTS();
-    if (gtest_res)
+    if (static_cast<bool>(gtest_res)) {
         return gtest_res;
+    }
 #endif
 
 #ifdef ENABLE_MSGSL_EXAMPLES
