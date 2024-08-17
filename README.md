@@ -34,7 +34,7 @@ Every subdirectory is a standalone project, starts with either `app` or `lib`
     - `fmt`
     - `spdlog`
     - `ms-gsl`
-    - `abseil`
+    - `cxxopts`
   - test libraries:
     - `doctest`
     - `gtest`
@@ -44,7 +44,7 @@ Every subdirectory is a standalone project, starts with either `app` or `lib`
 - CMake:
   - Official: [Getting Started](https://cmake.org/getting-started/)
   - OnLine Book: [Modern CMake](https://cliutils.gitlab.io/modern-cmake/)
-  - Introduction Video: [CppCon 2017: Mathieu Ropert “Using Modern CMake Patterns to Enforce a Good Modular Design”](https://www.youtube.com/watch?v=eC9-iRN2b04)
+  - Introduction Video: [CppCon 2017: Using Modern CMake Patterns to Enforce a Good Modular Design](https://www.youtube.com/watch?v=eC9-iRN2b04)
 - Conan:
   - Official: [conan.io](https://conan.io/)
 
@@ -63,9 +63,9 @@ Every subdirectory is a standalone project, starts with either `app` or `lib`
 - CMake-based project management, including dependencies
 - Conan support for dependency management in CMake
 - Code check tools such as `clang-format`, `cppcheck`
-- Sanitizers: Address Sanitizer, Leak Sanitizer, Undefined Behaviour Sanitizer, ...
+- Sanitizers: Address Sanitizer, Leak Sanitizer, Undefined Behavior Sanitizer, ...
 - Support for shared/static libraries, including generation of export information
-- Basic CPack configuration for redistributables
+- Basic CPack configuration for distributions
 - Documentation generator using `doxygen`
 
 ## Repository layout
@@ -84,7 +84,7 @@ The repository layout is pretty straightforward, including the CMake files to bu
   | -- cppcheck.cmake           - C++ static check tool
   | -- dependencies.cmake       - Project dependencies
   | -- doxygen.cmake            - Generate documentation, usage: `-DENABLE_DOXYGEN`
-  | -- standard_options.cmake   - Standard options, can be overrided with "-D..."
+  | -- standard_options.cmake   - Standard options, can be overridden with "-D..."
 -- CMakeLists.txt               - the main `CMake` Project configuration file
 -- `appdemo/`                   - application files (including CMakeLists.txt, sources)
 -- `libfoo/`                    - a library example (including CMakeLists.txt, sources, tests)
