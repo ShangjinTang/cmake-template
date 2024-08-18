@@ -6,7 +6,7 @@
 
 #define ENABLE_CUSTOM_LIBS
 #define ENABLE_MSGSL_EXAMPLES
-#define ENABLE_CXXOPTS
+#define ENABLE_CLI11
 #define ENABLE_DOCTEST
 #define ENABLE_GTEST
 
@@ -37,8 +37,9 @@ TEST(Subtraction, Integers) {
 }
 #endif
 
-#ifdef ENABLE_CXXOPTS
-#include "cxxopts.hpp"
+#ifdef ENABLE_CLI11
+#include "CLI/App.hpp"
+#include "CLI/CLI.hpp"
 #endif
 
 #ifdef ENABLE_MSGSL_EXAMPLES
@@ -49,20 +50,12 @@ size_t getStringLength(gsl::not_null<std::string *> strPtr) {
 #endif
 
 int main([[maybe_unused]] int argc, [[maybe_unused]] char *argv[]) {
-#ifdef ENABLE_CXXOPTS
-    cxxopts::Options options("demo", "A demo program of cmake-template");
-    /* clang-format off */
-    options.add_options()
-        ("powered_by", "Powered-By Information", cxxopts::value<std::string>()->default_value("cxxopts"))
-        ("h, help", "Print usage")
-    ;
-    /* clang-format on */
-    auto result = options.parse(argc, argv);
-    if (static_cast<bool>(result.count("help"))) {
-        std::cout << options.help() << std::endl;
-        exit(0);
-    }
-    std::string powered_by = result["powered_by"].as<std::string>();
+#ifdef ENABLE_CLI11
+    CLI::App app{"A demo program of cmake-template"};
+    argv = app.ensure_utf8(argv);
+    std::string powered_by = "cli11";
+    app.add_option("-p, --powered_by", powered_by, "Powered-By Information");
+    CLI11_PARSE(app, argc, argv);
     std::cout << "Support parse flags, powered by: " << powered_by << std::endl;
 #endif
     std::cout << "----------------------------------------------------------------------\n";
