@@ -1,0 +1,10 @@
+{
+  "dependencies": [
+    "doctest",
+    "fmt",
+    "gtest",
+    "ms-gsl",
+    "spdlog",
+    "cli11"
+  ]
+}

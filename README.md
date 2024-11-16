@@ -45,14 +45,17 @@ Every subdirectory is a standalone project, starts with either `app` or `lib`
   - Official: [Getting Started](https://cmake.org/getting-started/)
   - OnLine Book: [Modern CMake](https://cliutils.gitlab.io/modern-cmake/)
   - Introduction Video: [CppCon 2017: Using Modern CMake Patterns to Enforce a Good Modular Design](https://www.youtube.com/watch?v=eC9-iRN2b04)
-- Conan:
+- conan:
   - Official: [conan.io](https://conan.io/)
+- vcpkg:
+  - Official: [vcpkg.io](https://vcpkg.io/)
 
 ## Requirements
 
 - a modern C++20 compiler (suggest to use `gcc-13`, `clang-17`, `MSVC 2022` or above)
 - [`cmake`](https://cmake.org) 3.15+
 - [`conan`](https://conan.io) 2.0+
+- [`vcpkg`](https://vcpkg.io) latest
 - `cppcheck` (optional for code check, default disabled)
 - `clang-tidy` (optional for code check, default disabled)
 - `clang-format` (optional for code format, default disabled)
@@ -70,7 +73,7 @@ Every subdirectory is a standalone project, starts with either `app` or `lib`
 
 ## Repository layout
 
-The repository layout is pretty straightforward, including the CMake files to build the project, a `conanfile` where are declared examples of dependencies, a suppression list for cppcheck and the C++ source code:
+The repository layout is pretty straightforward, including the CMake files to build the project, `conanfile.txt` `vcpkg.json` where are declared examples of dependencies, a suppression list for cppcheck and the C++ source code:
 
 ```text
 -- .clang-format                - the clang-format rules for the C++ project
@@ -90,12 +93,14 @@ The repository layout is pretty straightforward, including the CMake files to bu
 -- `libfoo/`                    - a library example (including CMakeLists.txt, sources, tests)
 -- `libbar/`                    - another library example (including CMakeLists.txt, sources, tests)
 -- conanfile.txt                - the main `conan` configuration file listing dependencies
+-- vcpkg.json                   - the main `vcpkg` configuration file listing dependencies
 -- cppcheck_suppressions.txt    - optional list of suppressions for cppcheck
 
 -- `build/`                     - working directory for the build
 -- `doc/`                       - generate doc by `doxygen` and convert to `sphinx`
 
--- compile_run.sh    - compile script
+-- vcpkg_compile_run.sh         - compile script with vcpkg toolchain
+-- conan_compile_run.sh         - compile script with conan toolchain
 ```
 
 ## Available CMake Options
@@ -104,13 +109,29 @@ Please see [Standard Options](cmake/standard_options.cmake) to check all availab
 
 ## How to build from command line
 
+### conan
+
 The project requires built using `conan` with `pipx`:
 
 ```bash
-python3 -m pip install pipx
-pipx ensurepath
-pipx install conan
-./compile_run.sh
+python3 -m pip install pipx &&
+    pipx ensurepath &&
+    pipx install conan
+
+./conan_compile_run.sh
+```
+
+### vcpkg
+
+```bash
+git clone https://github.com/microsoft/vcpkg.git ~/vcpkg &&
+    cd ~/vcpkg && ./bootstrap-vcpkg.sh && ./vcpkg integrate install
+
+# Add the following exports to your shell's profile script (e.g., ~/.bashrc or ~/.zshrc)
+export VCPKG_ROOT=~/vcpkg
+export PATH=$VCPKG_ROOT:$PATH
+
+./vcpkg_compile_run.sh
 ```
 
 ## Features
@@ -218,10 +239,8 @@ To build shared libraries:
 
 ## Other Ways to Manage Dependencies
 
-- use other package manager
-  - [`vcpkg`](https://vcpkg.io/)
 - use cmake builtin dependency management
   - [`FetchContent`](https://cmake.org/cmake/help/latest/module/FetchContent.html)
   - [`ExternalProject`](https://cmake.org/cmake/help/latest/module/ExternalProject.html)
-- use `git submodules` for completely offline support
-  - it's supported in previous revisions, but is now removed to simplify this template; see [commit: remove 'git submodules' support](https://github.com/ShangjinTang/cmake-template/commit/a0f5f030bd73fa7c6cda63c5eedc1ba3d63fda57)
+- use `git submodules` for offline compilation support
+  - this is supported in previous revisions, but is now removed to simplify this template; see [commit: remove 'git submodules' support](https://github.com/ShangjinTang/cmake-template/commit/a0f5f030bd73fa7c6cda63c5eedc1ba3d63fda57)
