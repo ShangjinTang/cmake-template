@@ -2,13 +2,13 @@
 #
 # External Dependencies
 
-find_package(fmt QUIET REQUIRED)
-find_package(spdlog QUIET REQUIRED)
-find_package(Microsoft.GSL QUIET REQUIRED)
-find_package(CLI11 REQUIRED)
+find_package(fmt CONFIG REQUIRED)
+find_package(spdlog CONFIG REQUIRED)
+find_package(Microsoft.GSL CONFIG REQUIRED)
+find_package(CLI11 CONFIG REQUIRED)
 if(BUILD_TESTING)
-  find_package(doctest QUIET REQUIRED)
-  find_package(GTest QUIET REQUIRED)
+  find_package(doctest CONFIG REQUIRED)
+  find_package(GTest CONFIG REQUIRED)
 endif()
 
 # ##############################################################################
