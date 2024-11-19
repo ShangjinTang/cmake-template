@@ -6,7 +6,7 @@ Note: files are globbed here, and it's an anti-pattern in CMake. It's used for s
 
 ## Introduction
 
-Every subdirectory is a standalone project, starts with either `app` or `lib`
+Every subdirectory is a standalone project, starts with either `app` or `lib`.
 
 - Directory tree should be as below:
   ```text
@@ -31,10 +31,10 @@ Every subdirectory is a standalone project, starts with either `app` or `lib`
 - You can delete all `lib*` for executable-only project.
 - Link useful libraries for every subdirectory without install first, including:
   - common libraries:
+    - `cli11`
     - `fmt`
     - `spdlog`
     - `ms-gsl`
-    - `cxxopts`
   - test libraries:
     - `doctest`
     - `gtest`
@@ -45,17 +45,17 @@ Every subdirectory is a standalone project, starts with either `app` or `lib`
   - Official: [Getting Started](https://cmake.org/getting-started/)
   - OnLine Book: [Modern CMake](https://cliutils.gitlab.io/modern-cmake/)
   - Introduction Video: [CppCon 2017: Using Modern CMake Patterns to Enforce a Good Modular Design](https://www.youtube.com/watch?v=eC9-iRN2b04)
-- conan:
+- Conan:
   - Official: [conan.io](https://conan.io/)
-- vcpkg:
+- Vcpkg:
   - Official: [vcpkg.io](https://vcpkg.io/)
 
 ## Requirements
 
 - a modern C++20 compiler (suggest to use `gcc-13`, `clang-17`, `MSVC 2022` or above)
-- [`cmake`](https://cmake.org) >= 3.24
-- [`conan`](https://conan.io) >= 2.0.5
-- [`vcpkg`](https://vcpkg.io) latest
+- [`CMake`](https://cmake.org) >= 3.24
+- [`Conan`](https://conan.io) >= 2.0.5
+- [`Vcpkg`](https://vcpkg.io)
 - `cppcheck` (optional for code check, default disabled)
 - `clang-tidy` (optional for code check, default disabled)
 - `clang-format` (optional for code format, default disabled)
@@ -64,7 +64,7 @@ Every subdirectory is a standalone project, starts with either `app` or `lib`
 ## Features
 
 - CMake-based project management, including dependencies
-- Conan support for dependency management in CMake
+- Conan / Vcpkg support for dependency management in CMake
 - Code check tools such as `clang-format`, `cppcheck`
 - Sanitizers: Address Sanitizer, Leak Sanitizer, Undefined Behavior Sanitizer, ...
 - Support for shared/static libraries, including generation of export information
@@ -73,13 +73,13 @@ Every subdirectory is a standalone project, starts with either `app` or `lib`
 
 ## Repository layout
 
-The repository layout is pretty straightforward, including the CMake files to build the project, `conanfile.txt` `vcpkg.json` where are declared examples of dependencies, a suppression list for cppcheck and the C++ source code:
+The repository layout is pretty straightforward, including the CMake files to build the project, `conanfile.txt` `vcpkg.json` where declared dependencies, a suppression list for cppcheck and the C++ source code:
 
 ```text
 -- .clang-format                - the clang-format rules for the C++ project
 -- .clang-tidy                  - the clang-tidy rules for the C++ project
 -- .gitignore                   - files to be excluded by git
-+- `cmake/`                     - CMake modules
++- cmake/                       - CMake modules
   | -- clang_format.cmake       - C++ header/source format, usage: `--target format`
   | -- clang_tidy.cmake         - C++ static check tool
   | -- compiler-options.cmake   - Common compiler options for major platforms/compilers
@@ -87,20 +87,21 @@ The repository layout is pretty straightforward, including the CMake files to bu
   | -- cppcheck.cmake           - C++ static check tool
   | -- dependencies.cmake       - Project dependencies
   | -- doxygen.cmake            - Generate documentation, usage: `-DENABLE_DOXYGEN`
-  | -- standard_options.cmake   - Standard options, can be overridden with "-D..."
--- CMakeLists.txt               - the main `CMake` Project configuration file
--- `appdemo/`                   - application files (including CMakeLists.txt, sources)
--- `libfoo/`                    - a library example (including CMakeLists.txt, sources, tests)
--- `libbar/`                    - another library example (including CMakeLists.txt, sources, tests)
--- conanfile.txt                - the main `conan` configuration file listing dependencies
--- vcpkg.json                   - the main `vcpkg` configuration file listing dependencies
--- cppcheck_suppressions.txt    - optional list of suppressions for cppcheck
+  | -- standard_options.cmake   - Standard options, can be overridden with `-D...`
+-- CMakeLists.txt               - the main CMake Project configuration file
+-- appdemo/                     - application files (including CMakeLists.txt, sources)
+-- libfoo/                      - a library example (including CMakeLists.txt, sources, tests)
+-- libbar/                      - another library example (including CMakeLists.txt, sources, tests)
+-- conan_provider.cmake         - CMake dependency provider for Conan: https://github.com/conan-io/cmake-conan/blob/develop2/conan_provider.cmake
+-- conanfile.txt                - Conan configuration for external dependencies
+-- vcpkg.json                   - Vcpkg configuration for external dependencies
+-- cppcheck_suppressions.txt    - optional list of suppressions for `cppcheck`
 
--- `build/`                     - working directory for the build
--- `doc/`                       - generate doc by `doxygen` and convert to `sphinx`
+-- build/                       - working directory for the build
+-- doc/                         - generate doc by `doxygen` and convert to `sphinx`
 
--- vcpkg_compile_run.sh         - compile script with vcpkg toolchain
--- conan_compile_run.sh         - compile script with conan toolchain
+-- vcpkg_compile_run.sh         - compile script with Vcpkg toolchain
+-- conan_compile_run.sh         - compile script with Conan toolchain
 ```
 
 ## Available CMake Options
@@ -109,9 +110,7 @@ Please see [Standard Options](cmake/standard_options.cmake) to check all availab
 
 ## How to build from command line
 
-### conan
-
-The project requires built using `conan` with `pipx`:
+### Conan
 
 ```bash
 python3 -m pip install pipx &&
@@ -121,7 +120,7 @@ python3 -m pip install pipx &&
 ./conan_compile_run.sh
 ```
 
-### vcpkg
+### Vcpkg
 
 ```bash
 git clone https://github.com/microsoft/vcpkg.git ~/vcpkg &&
