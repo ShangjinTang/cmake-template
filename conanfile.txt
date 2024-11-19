@@ -3,12 +3,12 @@
 [requires]
 # common libraries
 cli11/2.4.2
-fmt/10.2.1
-ms-gsl/4.0.0
-spdlog/1.13.0
+fmt/11.0.2
+ms-gsl/4.1.0
+spdlog/1.15.0
 # test libraries
 doctest/2.4.11
-gtest/1.14.0
+gtest/1.15.0
 
 [generators]
 CMakeDeps
