@@ -27,8 +27,7 @@ print_seperate_line "1. Cleaning"
 rm -rf build &> /dev/null
 
 print_seperate_line "2. CMake: configure (conan)"
-conan install . -s build_type=Debug --build=missing
-cmake -S . -B build/Debug -DCMAKE_BUILD_TYPE=DEBUG -DCMAKE_TOOLCHAIN_FILE=build/Debug/generators/conan_toolchain.cmake
+cmake -S . -B build/Debug -DCMAKE_BUILD_TYPE=Debug -DCMAKE_PROJECT_TOP_LEVEL_INCLUDES=conan_provider.cmake
 cp build/Debug/compile_commands.json .
 
 print_seperate_line "3. CMake: build"
