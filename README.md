@@ -53,8 +53,8 @@ Every subdirectory is a standalone project, starts with either `app` or `lib`
 ## Requirements
 
 - a modern C++20 compiler (suggest to use `gcc-13`, `clang-17`, `MSVC 2022` or above)
-- [`cmake`](https://cmake.org) 3.15+
-- [`conan`](https://conan.io) 2.0+
+- [`cmake`](https://cmake.org) >= 3.24
+- [`conan`](https://conan.io) >= 2.0.5
 - [`vcpkg`](https://vcpkg.io) latest
 - `cppcheck` (optional for code check, default disabled)
 - `clang-tidy` (optional for code check, default disabled)

@@ -5,7 +5,7 @@
 # ##############################################################################
 # Define Project-Wide Settings
 # ##############################################################################
-cmake_minimum_required(VERSION 3.15)
+cmake_minimum_required(VERSION 3.24)
 # disable warning "CMP0115 is not set: Source file extensions must be explicit."
 cmake_policy(SET CMP0115 OLD)
 
