@@ -1,10 +1,9 @@
 #include <iostream>
 #include <string>
 
-#include "fmt/core.h"
-#include "spdlog/spdlog.h"
-
 #define ENABLE_CUSTOM_LIBS
+#define ENABLE_FMT
+#define ENABLE_SPDLOG
 #define ENABLE_MSGSL_EXAMPLES
 #define ENABLE_CLI11
 #define ENABLE_DOCTEST
@@ -13,6 +12,14 @@
 #ifdef ENABLE_CUSTOM_LIBS
 #include "libbar.h"
 #include "libfoo.h"
+#endif
+
+#ifdef ENABLE_FMT
+#include "fmt/core.h"
+#endif
+
+#ifdef ENABLE_SPDLOG
+#include "spdlog/spdlog.h"
 #endif
 
 #ifdef ENABLE_DOCTEST
@@ -58,6 +65,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char *argv[]) {
     CLI11_PARSE(app, argc, argv);
     std::cout << "Support parse flags, powered by: " << powered_by << std::endl;
 #endif
+
     std::cout << "----------------------------------------------------------------------\n";
 
 #ifdef ENABLE_CUSTOM_LIBS
@@ -93,9 +101,15 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char *argv[]) {
     fmt::print("Length of string '{}' is: {}\n", str, getStringLength(&str));
 #endif
 
-    fmt::print("{}, {}!\n", "Hello", "{fmt}");
+#ifdef ENABLE_SPDLOG
     spdlog::info("Welcome to spdlog!");
+#endif
+
+#ifdef ENABLE_FMT
+    fmt::print("{}, {}!\n", "Hello", "{fmt}");
+#endif
 
     std::cout << "----------------------------------------------------------------------\n";
+
     return 0;
 }
