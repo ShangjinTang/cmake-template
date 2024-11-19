@@ -100,8 +100,10 @@ The repository layout is pretty straightforward, including the CMake files to bu
 -- build/                       - working directory for the build
 -- doc/                         - generate doc by `doxygen` and convert to `sphinx`
 
--- vcpkg_compile_run.sh         - compile script with Vcpkg toolchain
--- conan_compile_run.sh         - compile script with Conan toolchain
+-- conan_setup.sh               - setup script with Conan toolchain
+-- vcpkg_setup.sh               - setup script with Vcpkg toolchain
+
+-- compile_run.sh               - compile script
 ```
 
 ## Available CMake Options
@@ -117,7 +119,8 @@ python3 -m pip install pipx &&
     pipx ensurepath &&
     pipx install conan
 
-./conan_compile_run.sh
+./conan_setup.sh
+./compile_run.sh
 ```
 
 ### Vcpkg
@@ -130,7 +133,8 @@ git clone https://github.com/microsoft/vcpkg.git ~/vcpkg &&
 export VCPKG_ROOT=~/vcpkg
 export PATH=$VCPKG_ROOT:$PATH
 
-./vcpkg_compile_run.sh
+./vcpkg_setup.sh
+./compile_run.sh
 ```
 
 ## Features

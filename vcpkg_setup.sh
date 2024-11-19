@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 COLOR_RESET=$(tput sgr0)
 COLOR_HIGHLIGHT=$(tput bold)$(tput setaf 6)
 
@@ -21,18 +23,9 @@ function print_seperate_line() {
     echo
 }
 
-print_seperate_line "1. Cleaning"
-rm -rf build &> /dev/null
+print_seperate_line "Cleaning"
+rm -rf build compile_commands.json &> /dev/null
 
-print_seperate_line "2. CMake: configure (vcpkg)"
+print_seperate_line "CMake: configure (vcpkg)"
 cmake -S . -B build/Debug -DCMAKE_BUILD_TYPE=DEBUG -DCMAKE_TOOLCHAIN_FILE=${VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake
 cp build/Debug/compile_commands.json .
-
-print_seperate_line "3. CMake: build"
-cmake --build build/Debug --config Debug
-
-print_seperate_line "4. Running CTest"
-ctest --test-dir build/Debug
-
-print_seperate_line "5. Running appdemo"
-./build/Debug/appdemo/demo-d
