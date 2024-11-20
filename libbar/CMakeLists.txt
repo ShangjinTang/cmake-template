@@ -132,7 +132,8 @@ if(BUILD_TESTING)
   endforeach()
 
   foreach(TEST_CASE ${TEST_CASES})
-    add_executable(${TEST_CASE} ${CMAKE_CURRENT_SOURCE_DIR}/test/${TEST_CASE})
+    add_executable(${TEST_CASE}
+                   ${CMAKE_CURRENT_SOURCE_DIR}/test/${TEST_CASE}.cpp)
     target_link_libraries(${TEST_CASE} PRIVATE ${TEST_LINKED_LIBRARIES})
     if(IS_CURRENT_BUILD_LIB)
       target_link_libraries(${TEST_CASE} PRIVATE ${TARGET_NAME})

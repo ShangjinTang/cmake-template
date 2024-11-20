@@ -6,19 +6,17 @@
 # Define Project-Wide Settings
 # ##############################################################################
 cmake_minimum_required(VERSION 3.24)
-# disable warning "CMP0115 is not set: Source file extensions must be explicit."
-cmake_policy(SET CMP0115 OLD)
 
 # Define the Project Name and Description
 project(
   cmake-demo
   LANGUAGES CXX
-  DESCRIPTION "")
+  DESCRIPTION "This is a CMake demo project")
 
 set(AUTHUR "shangjin.tang@gmail.com")
 set(PROJECT_NAME "CMakeDemo")
 
-# Set Project version (used for library versioning and for CPack)
+# Set Project version (used for library versioning and CPack)
 set(CMAKE_PROJECT_VERSION_MAJOR 1)
 set(CMAKE_PROJECT_VERSION_MINOR 0)
 set(CMAKE_PROJECT_VERSION_PATCH 0)
@@ -30,12 +28,14 @@ set(CMAKE_PROJECT_VERSION
 if(PROJECT_SOURCE_DIR STREQUAL PROJECT_BINARY_DIR)
   message(
     FATAL_ERROR
-      "Build in source directory is not allowed. Please specify a build directory as below:
-    cmake [options] -S . -B build\n")
+      "
+  Build in source directory is not allowed.
+  Please specify a build directory with option '-B':
+    cmake [<options>] -B <path-to-build> [-S <path-to-source>]")
 endif()
 
 # Start building
-message(VERBOSE "Building ${CMAKE_PROJECT_NAME} v${CMAKE_PROJECT_VERSION}...")
+message("Building ${CMAKE_PROJECT_NAME} v${CMAKE_PROJECT_VERSION}...")
 
 # Set required C++ Standard
 set(CMAKE_CXX_STANDARD 20)
