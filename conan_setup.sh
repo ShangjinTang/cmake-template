@@ -5,6 +5,10 @@ set -e
 COLOR_RESET=$(tput sgr0)
 COLOR_HIGHLIGHT=$(tput bold)$(tput setaf 6)
 
+BASEDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+pushd $BASEDIR > /dev/null
+
 if ! command -v conan &> /dev/null; then
     echo "'conan' not avaiable"
     echo "To install:"
@@ -31,3 +35,5 @@ rm -rf build compile_commands.json &> /dev/null
 print_seperate_line "CMake: configure (conan)"
 cmake -S . -B build/Debug -DCMAKE_BUILD_TYPE=Debug -DCMAKE_PROJECT_TOP_LEVEL_INCLUDES=conan_provider.cmake
 cp build/Debug/compile_commands.json .
+
+popd > /dev/null

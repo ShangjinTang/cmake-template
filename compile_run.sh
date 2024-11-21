@@ -5,6 +5,10 @@ set -e
 COLOR_RESET=$(tput sgr0)
 COLOR_HIGHLIGHT=$(tput bold)$(tput setaf 6)
 
+BASEDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+pushd $BASEDIR > /dev/null
+
 function print_seperate_line() {
     echo
     echo "${COLOR_HIGHLIGHT}======================================================================"
@@ -20,3 +24,5 @@ ctest --test-dir build/Debug
 
 print_seperate_line "Running appdemo"
 ./build/Debug/appdemo/demo-d
+
+popd > /dev/null
