@@ -31,7 +31,7 @@ print_seperate_line "Cleaning"
 rm -rf build compile_commands.json &> /dev/null
 
 print_seperate_line "CMake: configure (vcpkg)"
-cmake -S . -B build/Debug -DCMAKE_BUILD_TYPE=DEBUG -DCMAKE_TOOLCHAIN_FILE=${VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake
+cmake -S . -B build/Debug -DCMAKE_BUILD_TYPE=DEBUG -G Ninja -DCMAKE_TOOLCHAIN_FILE=${VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake
 cp build/Debug/compile_commands.json .
 
 popd > /dev/null
