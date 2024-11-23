@@ -32,6 +32,6 @@ rm -rf build compile_commands.json CMakePresets.json CMakeUserPresets.json &> /d
 
 print_seperate_line "CMake: configure (vcpkg)"
 cmake -S . -B build -DCMAKE_BUILD_TYPE=DEBUG -G Ninja -DCMAKE_TOOLCHAIN_FILE=${VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake
-cp build/compile_commands.json .
+cp build/compile_commands.json . &> /dev/null
 
 popd > /dev/null

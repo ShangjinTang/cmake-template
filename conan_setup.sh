@@ -34,6 +34,6 @@ rm -rf build compile_commands.json CMakePresets.json CMakeUserPresets.json &> /d
 
 print_seperate_line "CMake: configure (conan)"
 cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug -G Ninja -DCMAKE_PROJECT_TOP_LEVEL_INCLUDES=conan_provider.cmake
-cp build/compile_commands.json .
+cp build/compile_commands.json . &> /dev/null
 
 popd > /dev/null

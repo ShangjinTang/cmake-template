@@ -248,3 +248,41 @@ To build shared libraries:
   - [`ExternalProject`](https://cmake.org/cmake/help/latest/module/ExternalProject.html)
 - use `git submodules` for offline compilation support
   - this is supported in previous revisions, but is now removed to simplify this template; see [commit: remove 'git submodules' support](https://github.com/ShangjinTang/cmake-template/commit/a0f5f030bd73fa7c6cda63c5eedc1ba3d63fda57)
+
+## Integrate with VSCode
+
+Install VSCode extension [CMake Tools](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cmake-tools).
+
+- Install and connect to WSL2 if you are using Microsoft Windows.
+- Vcpkg is preferred to Conan for VSCode:
+  - Conan toolchain is generated inside build directory, so auto configure in VSCode would fail before running conan_setup.
+  - Vcpkg toolchain is default installed in ${VCPKG_ROOT}.
+- Do not use them at the same time in one project.
+
+### conan
+
+1. Setup toolchain for conan.
+
+```bash
+./conan_setup.sh
+```
+
+2. Open this project in VSCode.
+
+3. VSCode - click button `Build` - select `conan-debug` on pop-up window.
+
+### vcpkg
+
+1. Specify toolchain in `.vscode/settings.json`.
+
+```json
+{
+  "cmake.configureSettings": {
+    "CMAKE_TOOLCHAIN_FILE": "${env:VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
+  }
+}
+```
+
+2. Open this project in VSCode.
+
+3. VSCode - click button `Build`.
