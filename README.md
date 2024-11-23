@@ -142,7 +142,7 @@ export PATH=$VCPKG_ROOT:$PATH
 
 ### Test
 
-1. Add option `BUILD_TESTING` to automatic generate docs.
+1. Add option `BUILD_TESTING` to automatically generate docs.
 
    ```bash
    cmake -S . -B build -DBUILD_TESTING=ON
@@ -165,7 +165,7 @@ export PATH=$VCPKG_ROOT:$PATH
    sudo apt install -y clang-format
    ```
 
-2. Add option `ENABLE_CLANG_FORMAT` to automatic generate docs.
+2. Add option `ENABLE_CLANG_FORMAT` to automatically generate docs.
 
    ```bash
    cmake -S . -B build -DENABLE_CLANG_FORMAT=ON
@@ -185,7 +185,7 @@ export PATH=$VCPKG_ROOT:$PATH
 
 2. Specify `DOC_DIRS` in [top level CMakeLists.txt](./CMakeLists.txt).
 
-3. Add option `ENABLE_DOXYGEN` to automatic generate docs.
+3. Add option `ENABLE_DOXYGEN` to automatically generate docs.
 
    ```bash
    cmake -S . -B build -DENABLE_DOXYGEN=ON
@@ -255,34 +255,28 @@ Install VSCode extension [CMake Tools](https://marketplace.visualstudio.com/item
 
 - Install and connect to WSL2 if you are using Microsoft Windows.
 - Vcpkg is preferred to Conan for VSCode:
-  - Conan toolchain is generated inside build directory, so auto configure in VSCode would fail before running conan_setup.
+  - Conan toolchain is generated inside build directory, so configuration in VSCode would fail before running conan_setup.
   - Vcpkg toolchain is default installed in ${VCPKG_ROOT}.
 - Do not use them at the same time in one project.
 
 ### conan
 
 1. Setup toolchain for conan.
-
-```bash
-./conan_setup.sh
-```
-
+   ```bash
+   ./conan_setup.sh
+   ```
 2. Open this project in VSCode.
-
 3. VSCode - click button `Build` - select `conan-debug` on pop-up window.
 
 ### vcpkg
 
 1. Specify toolchain in `.vscode/settings.json`.
-
-```json
-{
-  "cmake.configureSettings": {
-    "CMAKE_TOOLCHAIN_FILE": "${env:VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
-  }
-}
-```
-
+   ```json
+   {
+     "cmake.configureSettings": {
+       "CMAKE_TOOLCHAIN_FILE": "${env:VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
+     }
+   }
+   ```
 2. Open this project in VSCode.
-
 3. VSCode - click button `Build`.
