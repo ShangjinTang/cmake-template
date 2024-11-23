@@ -17,12 +17,12 @@ function print_seperate_line() {
 }
 
 print_seperate_line "CMake: build"
-cmake --build build/Debug --config Debug
+cmake --build build
 
 print_seperate_line "CTest"
-ctest --test-dir build/Debug
+ctest --test-dir build
 
 print_seperate_line "Running appdemo"
-./build/Debug/appdemo/demo-d
+./build/appdemo/demo-d
 
 popd > /dev/null
