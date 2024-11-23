@@ -28,7 +28,7 @@ function print_seperate_line() {
 }
 
 print_seperate_line "Cleaning"
-rm -rf build compile_commands.json &> /dev/null
+rm -rf build compile_commands.json CMakePresets.json CMakeUserPresets.json &> /dev/null
 
 print_seperate_line "CMake: configure (vcpkg)"
 cmake -S . -B build -DCMAKE_BUILD_TYPE=DEBUG -G Ninja -DCMAKE_TOOLCHAIN_FILE=${VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake

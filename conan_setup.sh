@@ -30,7 +30,7 @@ function print_seperate_line() {
 }
 
 print_seperate_line "Cleaning"
-rm -rf build compile_commands.json &> /dev/null
+rm -rf build compile_commands.json CMakePresets.json CMakeUserPresets.json &> /dev/null
 
 print_seperate_line "CMake: configure (conan)"
 cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug -G Ninja -DCMAKE_PROJECT_TOP_LEVEL_INCLUDES=conan_provider.cmake
